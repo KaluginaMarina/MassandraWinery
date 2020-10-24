@@ -1,34 +1,37 @@
-import OrbitControls from "orbit-controls-es6";
 import THREE from "three.js";
-import {Winery} from "./classes/winery"
+import Winery from "./classes/winery"
+import Controls from "./classes/control";
+import Camera from "./classes/camera";
+import Renderer from "./classes/renderer";
 
-var scene;
-var camera;
-var renderer;
-var controls;
 
 window.onload = function () {
 
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer();
-    controls = new OrbitControls(camera, renderer.domElement);
+    const container = document.body;
 
-    animate();
+    var scene = new THREE.Scene();
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    var renderer = new Renderer(container);
+    var camera = new Camera(renderer.threeRenderer);
+    var controls = new Controls(camera.threeCamera, renderer.threeRenderer.domElement);
+
+    renderer.threeRenderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.threeRenderer.domElement);
 
     var winery = new Winery();
 
     scene.add(winery.winery);
 
-    camera.position.z = 25;
-    renderer.render(scene, camera);
+    camera.threeCamera.position.z = 25;
+
+    renderer.threeRenderer.render(scene, camera.threeCamera);
+
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.threeControls.update();
+        renderer.threeRenderer.render(scene, camera.threeCamera);
+    }
+
+    animate();
 }
 
-function animate() {
-    requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene, camera);
-}
