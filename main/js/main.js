@@ -1,7 +1,6 @@
 import OrbitControls from "orbit-controls-es6";
-import THREE from  "three.js";
-import "./classes/primitive.js"
-import {Primitive} from "./classes/primitive";
+import THREE from "three.js";
+import {Winery} from "./classes/winery"
 
 var scene;
 var camera;
@@ -20,17 +19,16 @@ window.onload = function () {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    var primitive = new Primitive()
+    var winery = new Winery();
 
-    var cubes = primitive.renderGroupOfCube();
-    scene.add(cubes);
+    scene.add(winery.winery);
 
     camera.position.z = 25;
     renderer.render(scene, camera);
 }
 
 function animate() {
-    requestAnimationFrame( animate );
+    requestAnimationFrame(animate);
     controls.update();
-    renderer.render( scene, camera );
+    renderer.render(scene, camera);
 }
