@@ -50,7 +50,7 @@ export default class Particles {
       },
 
       size: {
-        value: [0.7, 1.5],
+        value: [0.7, 1],
         spread: [0.05, 0.1],
       },
       activeMultiplier: 0.5,
