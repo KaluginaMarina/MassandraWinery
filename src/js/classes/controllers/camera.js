@@ -5,12 +5,12 @@ export default class Camera {
   constructor(renderer) {
     const fov = 60;
     const near = 0.1;
-    const far = 500;
+    const far = 1000;
     const aspect = renderer.domElement.width / renderer.domElement.height;
 
     // Create and position a Perspective Camera
     this.threeCamera = new PerspectiveCamera(fov, aspect, near, far);
-    this.threeCamera.position.set(-1.7, 0.5, -3.7);
+    this.threeCamera.position.set(0, 0, 0);
 
     // Initial sizing
     this.updateSize(renderer);

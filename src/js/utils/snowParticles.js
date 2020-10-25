@@ -13,16 +13,16 @@ export default class Particles {
       },
       // fog fix: https://github.com/squarefeet/ShaderParticleEngine/pull/132/files
       fog: true,
-      maxParticleCount: 3000,
+      maxParticleCount: 10000,
     });
 
     const emitter = new SPE.Emitter({
       maxAge: {
-        value: 16,
+        value: 33,
       },
       position: {
-        value: new Vector3(0, 6, 0),
-        spread: new Vector3(9, 0, 9),
+        value: new Vector3(0, 30, 0),
+        spread: new Vector3(90, 0, 90),
       },
 
       rotation: {
@@ -37,7 +37,7 @@ export default class Particles {
       },
 
       velocity: {
-        value: new Vector3(0, -0.04, 0),
+        value: new Vector3(0, -0.4, 0),
         spread: new Vector3(0.5, -0.01, 0.2),
       },
 
@@ -50,11 +50,11 @@ export default class Particles {
       },
 
       size: {
-        value: [0.05, 0.1],
+        value: [0.7, 1.5],
         spread: [0.05, 0.1],
       },
       activeMultiplier: 0.5,
-      particleCount: 3000,
+      particleCount: 10000,
     });
 
     particleGroup.addEmitter(emitter);

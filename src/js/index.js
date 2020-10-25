@@ -10,14 +10,14 @@ import {
 import { WEBGL } from "three/examples/jsm/WebGL.js";
 import { THREEx } from "./libs/threex.skydomeshader";
 
-import Controls from "./classes/controls";
-import Renderer from "./classes/renderer";
-import Camera from "./classes/camera";
-import InteractionController from "./classes/interactionController";
+import Controls from "./classes/controllers/controls";
+import Renderer from "./classes/controllers/renderer";
+import Camera from "./classes/controllers/camera";
+import InteractionController from "./classes/controllers/interactionController";
 import SnowParticles from "./utils/snowParticles";
 import * as Lights from "./utils/lights";
 
-import Winery from "./classes/winery";
+import Winery from "./classes/models/winery";
 
 if (WEBGL.isWebGLAvailable()) {
   init();

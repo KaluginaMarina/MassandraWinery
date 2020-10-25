@@ -4,13 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'production',
-  plugins: [
-    new CopyPlugin({
-      patterns: [
-        { from: 'ogimage.jpg', to: '' },
-      ]
-    }),
-  ],
+  plugins: [],
 
   performance: { 
     // hints: false,

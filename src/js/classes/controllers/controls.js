@@ -9,12 +9,12 @@ export default class Controls {
 
     controls.target.set(0, 0, 0);
     controls.enableDamping = true;
-    controls.rotateSpeed = 0.25;
+    controls.rotateSpeed = 0.5;
     controls.dampingFactor = 0.1;
     controls.target.set(0, 0.7, 0);
     controls.maxPolarAngle = (1.03 * Math.PI) / 2;
-    controls.minDistance = 2;
-    controls.maxDistance = 9;
+    controls.minDistance = 5;
+    controls.maxDistance = 150;
 
     function handleMouseMove() {
       document.body.style.cursor = "grabbing";
