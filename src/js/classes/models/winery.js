@@ -45,20 +45,12 @@ export default class Winery {
         // windows box
         let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 40);
 
-        // for (var i = 0; i < 19; ++i){
-        //     let windowMash = new Mesh(windowGeometry.clone());
-        //     windowMash.position.set(-9 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, -40 + 4.5);
-        //     windowMash.updateMatrix();
-        //
-        //     subtract_bsp = CSG.fromMesh(windowMash);
-        //     emptyCube = emptyCube.subtract(subtract_bsp);
-        // }
 
-        // cut windows box
-        let windowMash = new Mesh(windowGeometry);
-        windowMash.position.set(0, 0, -40 + 4.5);
+        let windowMash = new Mesh(windowGeometry.clone());
+        windowMash.position.set(0, 0, 4.5);
         windowMash.updateMatrix();
 
+        // cut windows box
         subtract_bsp = CSG.fromMesh(windowMash);
         let cubeWithWind = emptyCube.subtract(subtract_bsp);
 
