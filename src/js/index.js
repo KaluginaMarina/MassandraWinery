@@ -6,6 +6,7 @@ import {
   TextureLoader,
   SphereBufferGeometry,
   Mesh,
+  CameraHelper, BoxGeometry, MeshBasicMaterial, PlaneGeometry, MeshPhongMaterial, MeshStandardMaterial,
 } from "three";
 import { WEBGL } from "three/examples/jsm/WebGL.js";
 import { THREEx } from "./libs/threex.skydomeshader";
@@ -16,6 +17,7 @@ import Camera from "./classes/controllers/camera";
 import InteractionController from "./classes/controllers/interactionController";
 import SnowParticles from "./utils/snowParticles";
 import * as Lights from "./utils/lights";
+import * as Ground from "./utils/ground";
 
 import Winery from "./classes/models/winery";
 
@@ -53,7 +55,11 @@ function init() {
   const sky = new Mesh(skyGeo, skyMat);
   scene.add(sky);
 
+  // GROUND
+  scene.add(Ground.default());
+
   Lights.default(scene);
+
 
 
   scene.add(new Winery().winery);
