@@ -1,8 +1,17 @@
 import {
     Group,
-    BoxGeometry, MeshBasicMaterial, Mesh, ShadowMaterial, MeshStandardMaterial, Geometry, PlaneGeometry, DoubleSide
+    BoxGeometry,
+    MeshBasicMaterial,
+    Mesh,
+    ShadowMaterial,
+    MeshStandardMaterial,
+    Geometry,
+    PlaneGeometry,
+    DoubleSide,
+    TextureLoader, Matrix4, EquirectangularReflectionMapping
 } from "three";
 import {CSG} from "three-csg-ts";
+import skyPanoImg from "../../../resources/img/sky-dome-panorma.jpg";
 
 let FACADE_COLOR = 0xe0cfb1;
 let LOGIC_CUBE_SIZE = 3;
@@ -45,7 +54,7 @@ export default class Winery {
         let emptyCube = cube_bsp.subtract(subtract_bsp);
 
         // windows box
-        let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 40);
+        let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 4);
 
 
         for (var i = 0; i < 19; i++) {
@@ -63,21 +72,10 @@ export default class Winery {
         mainWallMesh.castShadow = true;
         mainWallMesh.receiveShadow = true;
 
+        // set windows
         for (var i = 0; i < 19; ++i) {
-            let window = this.createWindow(-9 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, -40 + 4.5);
+            let window = this.createWindow(-9 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, -40 + 4.4);
             group.add(window.clone());
-        }
-
-        for (var j = 1; j < 4; ++j) {
-            for (var i = 0; i < 3; ++i) {
-                let window = this.createWindow(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, j * LOGIC_CUBE_SIZE, -40 + 4.5);
-                group.add(window.clone());
-            }
-        }
-
-        for (var i = 0; i < 25; ++i) {
-            let window1 = this.createWindow(-12 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, -40 + -4.5);
-            group.add(window1.clone());
         }
 
         group.add(mainWallMesh);
@@ -150,19 +148,32 @@ export default class Winery {
         floor.position.set(0, 7.5, -40);
         group.add(floor2);
 
+        // set windows
+        for (var j = 1; j < 4; ++j) {
+            for (var i = 0; i < 3; ++i) {
+                let window = this.createWindow(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, j * LOGIC_CUBE_SIZE, -40 + 4.4);
+                group.add(window.clone());
+            }
+        }
+
         return group;
     }
 
     createWindow(x, y, z) {
-
         let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 0.1);
-        let windowMaterial = new MeshBasicMaterial({
-            color: 0xffffff,
-            transparent: true,
-            wireframe: false,
-            opacity: 0.4,
+        let window = new Mesh(windowGeometry);
+
+        let textureLoader = new TextureLoader();
+
+        let textureCube = textureLoader.load(skyPanoImg, function () {
+            window.material.needsUpdate = true;
         });
-        let window = new Mesh(windowGeometry, windowMaterial);
+
+        window.material.color.setHex(0xffffff);
+        window.material.transparent = true;
+        window.material.opacity = 0.4;
+        window.material.envMap = textureCube;
+        textureCube.mapping = EquirectangularReflectionMapping;
         window.position.set(x, y, z);
 
         return window;
