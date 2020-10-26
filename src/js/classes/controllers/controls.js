@@ -13,7 +13,7 @@ export default class Controls {
     controls.dampingFactor = 0.1;
     controls.target.set(0, 0.7, 0);
     controls.maxPolarAngle = (1.03 * Math.PI) / 2;
-    controls.minDistance = 5;
+    controls.minDistance = 1;
     controls.maxDistance = 150;
 
     function handleMouseMove() {
