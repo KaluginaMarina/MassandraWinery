@@ -6,7 +6,7 @@ import {
   TextureLoader,
   SphereBufferGeometry,
   Mesh,
-  CameraHelper, BoxGeometry, MeshBasicMaterial, PlaneGeometry, MeshPhongMaterial, MeshStandardMaterial,
+  CameraHelper, BoxGeometry, MeshBasicMaterial, PlaneGeometry, MeshPhongMaterial, MeshStandardMaterial, SphereGeometry,
 } from "three";
 import { WEBGL } from "three/examples/jsm/WebGL.js";
 import { THREEx } from "./libs/threex.skydomeshader";
@@ -20,39 +20,40 @@ import * as Lights from "./utils/lights";
 import * as Ground from "./utils/ground";
 
 import Winery from "./classes/models/winery";
+import Moon from "./classes/models/moon";
 
 if (WEBGL.isWebGLAvailable()) {
   init();
 } else {
-  const warning = WEBGL.getWebGLErrorMessage();
+  let warning = WEBGL.getWebGLErrorMessage();
   document.body.appendChild(warning);
 }
 
 function init() {
-  const container = document.body;
-  const clock = new Clock();
+  let container = document.body;
+  let clock = new Clock();
   let delta = 0;
 
-  const scene = new Scene();
+  let scene = new Scene();
 
-  const renderer = new Renderer(container);
-  const camera = new Camera(renderer.threeRenderer);
-  const controls = new Controls(
+  let renderer = new Renderer(container);
+  let camera = new Camera(renderer.threeRenderer);
+  let controls = new Controls(
     camera.threeCamera,
     renderer.threeRenderer.domElement
   );
   controls.threeControls.update();
 
-  const textureLoader = new TextureLoader();
+  let textureLoader = new TextureLoader();
 
-  // const particles = new Particles(scene);
-  const particles = new SnowParticles(scene);
+  // let particles = new Particles(scene);
+  let particles = new SnowParticles(scene);
 
   // SKYBOX
-  const skyGeo = new SphereBufferGeometry(400, 32, 15);
-  const skyMat = THREEx.skyDomeShaderMaterial();
+  let skyGeo = new SphereBufferGeometry(400, 32, 15);
+  let skyMat = THREEx.skyDomeShaderMaterial();
 
-  const sky = new Mesh(skyGeo, skyMat);
+  let sky = new Mesh(skyGeo, skyMat);
   scene.add(sky);
 
   // GROUND
@@ -60,7 +61,8 @@ function init() {
 
   Lights.default(scene);
 
-
+  // MOON
+  scene.add(new Moon().moon);
 
   scene.add(new Winery().winery);
 

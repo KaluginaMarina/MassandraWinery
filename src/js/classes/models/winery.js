@@ -76,18 +76,7 @@ export default class Winery {
         group.add(tower);
 
         // add floor in tower
-        let geometry = new PlaneGeometry(3 * LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 32);
-        let floor = new Mesh(geometry, new MeshBasicMaterial({color: 0x888888, side: DoubleSide}));
-        floor.rotation.x = -Math.PI / 2;
-        floor.receiveShadow = true;
-        floor.castShadow = true;
-
-        floor.position.set(0, 4.5, -40);
-        group.add(floor);
-
-        let floor2 = floor.clone();
-        floor.position.set(0, 7.5, -40);
-        group.add(floor2);
+        group.add(this.createFloor());
 
         // set windows
         for (var j = 1; j < 4; ++j) {
@@ -120,6 +109,28 @@ export default class Winery {
         return window;
     }
 
+    createFloor(){
+        let group = new Group();
+        let geometry = new PlaneGeometry(3 * LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 32);
+        let floor = new Mesh(geometry, new MeshStandardMaterial({color: 0x888888, side: DoubleSide}));
+        floor.castShadow = true;
+        floor.receiveShadow = true;
+        floor.rotation.x = -Math.PI / 2;
+        floor.receiveShadow = true;
+        floor.castShadow = true;
+
+        floor.position.set(0, 4.5, -40);
+        group.add(floor);
+
+        let floor2 = floor.clone();
+        floor.position.set(0, 7.5, -40);
+        group.add(floor2);
+
+        let floor3 = floor.clone();
+        floor.position.set(0, 1.5, -40);
+        group.add(floor2);
+        return group;
+    }
     createMainWall(facadeMaterial) {
         let mainWallGeometry = new BoxGeometry(26 * LOGIC_CUBE_SIZE, LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE);
         let mainWall = new Mesh(mainWallGeometry);
