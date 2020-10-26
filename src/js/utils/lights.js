@@ -1,15 +1,14 @@
 import {PointLight, DirectionalLight, HemisphereLight, CameraHelper} from "three";
 
 export default function x(scene) {
-    var hemiLight = new HemisphereLight(0xffffff, 0xffffff, 0.6);
+    var hemiLight = new HemisphereLight(0xffffff, 0xffffff, 0.3);
     hemiLight.color.setHSL(0.6, 1, 0.6);
     hemiLight.groundColor.setHSL(0.095, 0.8, 0.5);
     hemiLight.position.set(0, 30, 0);
     scene.add(hemiLight);
 
 
-    var dirLight = new DirectionalLight(0xffffff, 1);
-    // dirLight.color.setHSL(0.6, 0.1, 1);
+    var dirLight = new DirectionalLight(0xffffff, 0.3);
 
     dirLight.position.set(-50, 80, 0);
 
@@ -32,9 +31,9 @@ export default function x(scene) {
     // scene.add(helper);
 
 
-    // var pointLight = new newPointLight(0xffff55, 3);
-    // pointLight.distance = 1.5; // distance has no effect - bug?
-    // pointLight.position.set(0, 0.4, 0);
-    // // pointLight.castShadow = true;
-    // scene.add(pointLight);
+    var pointLight = new PointLight(0xffff55, 3);
+    pointLight.distance = 11;
+    pointLight.position.set(0, 0, -40);
+    pointLight.castShadow = true;
+    scene.add(pointLight);
 }

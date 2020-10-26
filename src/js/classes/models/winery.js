@@ -1,14 +1,13 @@
 import {
-    Group,
     BoxGeometry,
-    MeshBasicMaterial,
-    Mesh,
-    ShadowMaterial,
-    MeshStandardMaterial,
-    Geometry,
-    PlaneGeometry,
     DoubleSide,
-    TextureLoader, Matrix4, EquirectangularReflectionMapping
+    EquirectangularReflectionMapping,
+    Group,
+    Mesh,
+    MeshBasicMaterial,
+    MeshStandardMaterial,
+    PlaneGeometry,
+    TextureLoader
 } from "three";
 import {CSG} from "three-csg-ts";
 import skyPanoImg from "../../../resources/img/sky-dome-panorma.jpg";
@@ -28,6 +27,7 @@ export default class Winery {
         return group;
     }
 
+
     createFacade() {
         let facadeMaterial = new MeshStandardMaterial({
             color: FACADE_COLOR,
@@ -39,38 +39,7 @@ export default class Winery {
         // ====================================================
         // create main wall
         // ====================================================
-        let mainWallGeometry = new BoxGeometry(26 * LOGIC_CUBE_SIZE, LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE);
-        let mainWall = new Mesh(mainWallGeometry);
-        mainWall.updateMatrix();
-
-        // inner box
-        let cutgeo = mainWall.clone();
-        cutgeo.scale.multiplyScalar(0.95);
-        cutgeo.updateMatrix();
-
-        // cut inner box
-        let cube_bsp = CSG.fromMesh(mainWall);
-        let subtract_bsp = CSG.fromMesh(cutgeo);
-        let emptyCube = cube_bsp.subtract(subtract_bsp);
-
-        // windows box
-        let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 4);
-
-
-        for (var i = 0; i < 19; i++) {
-            let windowMash = new Mesh(windowGeometry.clone());
-            windowMash.position.set(-9 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, 4.5);
-            windowMash.updateMatrix();
-            subtract_bsp = CSG.fromMesh(windowMash);
-            emptyCube = emptyCube.subtract(subtract_bsp);
-        }
-
-        // cut windows box
-        let mainWallMesh = CSG.toMesh(emptyCube, mainWall.matrix);
-        mainWallMesh.material = facadeMaterial;
-        mainWallMesh.position.set(0, 0, -40);
-        mainWallMesh.castShadow = true;
-        mainWallMesh.receiveShadow = true;
+        let mainWallMesh = this.createMainWall(facadeMaterial);
 
         // set windows
         for (var i = 0; i < 19; ++i) {
@@ -102,41 +71,13 @@ export default class Winery {
         // ====================================================
         // create tower
         // ====================================================
-        let geometry2 = new BoxGeometry(3 * LOGIC_CUBE_SIZE, 4 * LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE);
-        let tower = new Mesh(geometry2);
-        tower.updateMatrix();
 
-        // iner box
-        cutgeo = tower.clone();
-        cutgeo.scale.multiplyScalar(0.95);
-        cutgeo.updateMatrix();
-
-        // cut inner box
-        cube_bsp = CSG.fromMesh(tower);
-        subtract_bsp = CSG.fromMesh(cutgeo);
-        let emptyTower = cube_bsp.subtract(subtract_bsp);
-
-        let windowGeometrySmall = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 5);
-        for (var j = 0; j < 3; ++j) {
-            for (var i = 0; i < 3; i++) {
-                let windowMash = new Mesh(windowGeometrySmall.clone());
-                windowMash.position.set(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, -4 + j*LOGIC_CUBE_SIZE, 4.5);
-                windowMash.updateMatrix();
-                subtract_bsp = CSG.fromMesh(windowMash);
-                emptyTower = emptyTower.subtract(subtract_bsp);
-            }
-        }
-
-        tower = CSG.toMesh(emptyTower, tower.matrix);
-        tower.material = facadeMaterial;
-        tower.position.set(0, 7, -40);
-        tower.castShadow = true;
-        tower.receiveShadow = true;
+        let tower = this.createTower(facadeMaterial);
         group.add(tower);
 
         // add floor in tower
-        let geometry = new PlaneGeometry( 3 * LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 32 );
-        let floor = new Mesh(geometry, new MeshBasicMaterial( {color: 0x888888, side: DoubleSide} ));
+        let geometry = new PlaneGeometry(3 * LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 32);
+        let floor = new Mesh(geometry, new MeshBasicMaterial({color: 0x888888, side: DoubleSide}));
         floor.rotation.x = -Math.PI / 2;
         floor.receiveShadow = true;
         floor.castShadow = true;
@@ -177,5 +118,73 @@ export default class Winery {
         window.position.set(x, y, z);
 
         return window;
+    }
+
+    createMainWall(facadeMaterial) {
+        let mainWallGeometry = new BoxGeometry(26 * LOGIC_CUBE_SIZE, LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE);
+        let mainWall = new Mesh(mainWallGeometry);
+        mainWall.updateMatrix();
+
+        let emptyCube = this.createEmptyBox(mainWall);
+
+        // windows box
+        let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 4);
+
+
+        for (var i = 0; i < 19; i++) {
+            let windowMash = new Mesh(windowGeometry.clone());
+            windowMash.position.set(-9 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, 4.5);
+            windowMash.updateMatrix();
+            let subtract_bsp = CSG.fromMesh(windowMash);
+            emptyCube = emptyCube.subtract(subtract_bsp);
+        }
+
+        // cut windows box
+        let mainWallMesh = CSG.toMesh(emptyCube, mainWall.matrix);
+        mainWallMesh.material = facadeMaterial;
+        mainWallMesh.position.set(0, 0, -40);
+        mainWallMesh.castShadow = true;
+        mainWallMesh.receiveShadow = true;
+
+        return mainWallMesh;
+    }
+
+    createTower(facadeMaterial) {
+        let geometry2 = new BoxGeometry(3 * LOGIC_CUBE_SIZE, 4 * LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE);
+        let tower = new Mesh(geometry2);
+        tower.updateMatrix();
+
+        let emptyTower = this.createEmptyBox(tower);
+
+        let windowGeometrySmall = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 5);
+        for (var j = 0; j < 3; ++j) {
+            for (var i = 0; i < 3; i++) {
+                let windowMash = new Mesh(windowGeometrySmall.clone());
+                windowMash.position.set(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, -4 + j * LOGIC_CUBE_SIZE, 4.5);
+                windowMash.updateMatrix();
+                let subtract_bsp = CSG.fromMesh(windowMash);
+                emptyTower = emptyTower.subtract(subtract_bsp);
+            }
+        }
+
+        tower = CSG.toMesh(emptyTower, tower.matrix);
+        tower.material = facadeMaterial;
+        tower.position.set(0, 7, -40);
+        tower.castShadow = true;
+        tower.receiveShadow = true;
+
+        return tower;
+    }
+
+    createEmptyBox(box){
+        // iner box
+        let cutgeo = box.clone();
+        cutgeo.scale.multiplyScalar(0.95);
+        cutgeo.updateMatrix();
+
+        // cut inner box
+        let cube_bsp = CSG.fromMesh(box);
+        let subtract_bsp = CSG.fromMesh(cutgeo);
+        return cube_bsp.subtract(subtract_bsp);
     }
 }
