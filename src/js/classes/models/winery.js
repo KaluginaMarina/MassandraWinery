@@ -46,15 +46,16 @@ export default class Winery {
         let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 40);
 
 
-        let windowMash = new Mesh(windowGeometry.clone());
-        windowMash.position.set(0, 0, 4.5);
-        windowMash.updateMatrix();
+        for (var i = 0; i < 19; i++) {
+            let windowMash = new Mesh(windowGeometry.clone());
+            windowMash.position.set(-9 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, 4.5);
+            windowMash.updateMatrix();
+            subtract_bsp = CSG.fromMesh(windowMash);
+            emptyCube = emptyCube.subtract(subtract_bsp);
+        }
 
         // cut windows box
-        subtract_bsp = CSG.fromMesh(windowMash);
-        let cubeWithWind = emptyCube.subtract(subtract_bsp);
-
-        let mainWallMesh = CSG.toMesh(cubeWithWind, mainWall.matrix);
+        let mainWallMesh = CSG.toMesh(emptyCube, mainWall.matrix);
         mainWallMesh.material = facadeMaterial;
         mainWallMesh.position.set(0, 0, -40);
         mainWallMesh.castShadow = true;
@@ -64,6 +65,12 @@ export default class Winery {
             let window = this.createWindow(-9 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, -40 + 4.5);
             group.add(window.clone());
         }
+
+        for (var i = 0; i < 25; ++i) {
+            let window1 = this.createWindow(-12 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, -40 + -4.5);
+            group.add(window1.clone());
+        }
+
         group.add(mainWallMesh);
 
         let geometry1 = new BoxGeometry(3 * LOGIC_CUBE_SIZE, LOGIC_CUBE_SIZE, 11 * LOGIC_CUBE_SIZE);
