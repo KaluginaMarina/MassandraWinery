@@ -1,6 +1,6 @@
 import {
     Group,
-    BoxGeometry, MeshBasicMaterial, Mesh, ShadowMaterial, MeshStandardMaterial, Geometry
+    BoxGeometry, MeshBasicMaterial, Mesh, ShadowMaterial, MeshStandardMaterial, Geometry, PlaneGeometry, DoubleSide
 } from "three";
 import {CSG} from "three-csg-ts";
 
@@ -135,6 +135,20 @@ export default class Winery {
         tower.castShadow = true;
         tower.receiveShadow = true;
         group.add(tower);
+
+        // add floor in tower
+        let geometry = new PlaneGeometry( 3 * LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 32 );
+        let floor = new Mesh(geometry, new MeshBasicMaterial( {color: 0x888888, side: DoubleSide} ));
+        floor.rotation.x = -Math.PI / 2;
+        floor.receiveShadow = true;
+        floor.castShadow = true;
+
+        floor.position.set(0, 4.5, -40);
+        group.add(floor);
+
+        let floor2 = floor.clone();
+        floor.position.set(0, 7.5, -40);
+        group.add(floor2);
 
         return group;
     }
