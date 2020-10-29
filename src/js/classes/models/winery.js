@@ -52,16 +52,15 @@ export default class Winery {
         // ===================================================
         // create leftWall
         // ====================================================
-        let geometry1 = new BoxGeometry(3 * LOGIC_CUBE_SIZE, LOGIC_CUBE_SIZE, 11 * LOGIC_CUBE_SIZE);
-        let leftWall = new Mesh(geometry1, facadeMaterial.clone());
-        leftWall.position.set(-35, 0, -28);
-        leftWall.castShadow = true;
-        leftWall.receiveShadow = true;
-        group.add(leftWall);
+
+        group.add(this.createLeftWall(facadeMaterial));
+
+        // set windows
 
         // ====================================================
         // create right wall
         // ====================================================
+        let geometry1 = new BoxGeometry(3 * LOGIC_CUBE_SIZE, LOGIC_CUBE_SIZE, 11 * LOGIC_CUBE_SIZE);
         let rightWall = new Mesh(geometry1, facadeMaterial.clone());
         rightWall.position.set(35, 0, -28);
         rightWall.castShadow = true;
@@ -107,6 +106,43 @@ export default class Winery {
         window.position.set(x, y, z);
 
         return window;
+    }
+
+    createLeftWall(facadeMaterial){
+        let group = new Group();
+        let geometry1 = new BoxGeometry(3 * LOGIC_CUBE_SIZE, LOGIC_CUBE_SIZE, 11 * LOGIC_CUBE_SIZE);
+        let leftWall = new Mesh(geometry1, facadeMaterial.clone());
+        leftWall.updateMatrix();
+
+        let emptyCube = this.createEmptyBox(leftWall);
+
+        // windows box
+        let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 4);
+
+        for (var i = 0; i < 3; ++i) {
+            let windowMash = new Mesh(windowGeometry.clone());
+            windowMash.position.set(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, 5*LOGIC_CUBE_SIZE);
+            windowMash.updateMatrix();
+            let subtract_bsp = CSG.fromMesh(windowMash);
+            emptyCube = emptyCube.subtract(subtract_bsp);
+        }
+
+        for (var i = 0; i < 10; i++) {
+            let windowMash = new Mesh(windowGeometry.clone());
+            windowMash.rotateY(Math.PI/2)
+            windowMash.position.set(4.5,0, -2*LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i);
+            windowMash.updateMatrix();
+            let subtract_bsp = CSG.fromMesh(windowMash);
+            emptyCube = emptyCube.subtract(subtract_bsp);
+        }
+        leftWall= CSG.toMesh(emptyCube, leftWall.matrix);
+        leftWall.material = facadeMaterial;
+        leftWall.position.set(-35, 0, -28);
+        leftWall.castShadow = true;
+        leftWall.receiveShadow = true;
+        group.add(leftWall);
+
+        return group;
     }
 
     createFloor(){
