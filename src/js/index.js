@@ -44,8 +44,6 @@ function init() {
   );
   controls.threeControls.update();
 
-  let textureLoader = new TextureLoader();
-
   // let particles = new Particles(scene);
   let particles = new SnowParticles(scene);
 
@@ -66,7 +64,7 @@ function init() {
 
   scene.add(new Winery().winery);
 
-  new InteractionController(scene, camera.threeCamera, container);
+  // new InteractionController(scene, camera.threeCamera, container);
 
   function update(delta) {
     particles.update(delta);

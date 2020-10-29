@@ -11,7 +11,6 @@ export default class Particles {
       texture: {
         value: loader.load(snowflake),
       },
-      // fog fix: https://github.com/squarefeet/ShaderParticleEngine/pull/132/files
       fog: true,
       maxParticleCount: 10000,
     });
@@ -26,14 +25,10 @@ export default class Particles {
       },
 
       rotation: {
-        //axis: new THREE.Vector3( 0, 1, 0 ),
-        //spread: new THREE.Vector3( 0, 720, 0 ),
-        //angle: 100 * Math.PI / 180,
       },
 
       acceleration: {
         value: new Vector3(0, -0.02, 0),
-        //spread: new THREE.Vector3( 0, -10, 0 )
       },
 
       velocity: {
@@ -60,11 +55,8 @@ export default class Particles {
     particleGroup.addEmitter(emitter);
     emitter.enabled = true;
     scene.add(particleGroup.mesh);
-    // particleGroupCrash.tick( 28 );
     particleGroup.tick(16);
 
-    // smokeEmitter.disable();
-    // particleGroup.mesh.frustumCulled = false;
     this.emitter = emitter;
     this.particleGroup = particleGroup;
 

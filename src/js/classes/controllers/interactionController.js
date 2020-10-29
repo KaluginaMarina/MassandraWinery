@@ -50,12 +50,9 @@ export default class InteractionController {
     function raycast(x, y) {
       mouseVector.x = 2 * (x / window.innerWidth) - 1;
       mouseVector.y = 1 - 2 * (y / window.innerHeight);
-      // mouseVector.x = 2 * (e.clientX / container.offsetWidth) - 1;
-      // mouseVector.y = 1 - 2 * ( e.clientY / container.offsetHeight );
-      // update the picking ray with the camera and mouse position
+
       raycaster.setFromCamera(mouseVector, camera);
       // calculate objects intersecting the picking ray
-      // return raycaster.intersectObjects( interactionObjects, true );
       return raycaster.intersectObjects(scene.children, true);
     }
   }

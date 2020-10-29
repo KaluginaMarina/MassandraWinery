@@ -10,9 +10,6 @@ export default class Renderer {
     this.threeRenderer = new WebGLRenderer({ antialias: true });
 
     this.threeRenderer.outputEncoding = GammaEncoding;
-    // this.threeRenderer.gammaInput = true;
-    // Set clear color to fog to enable fog or to hex color for no fog
-    // this.threeRenderer.setClearColor('#555'); // scene.fog.color
     this.threeRenderer.setPixelRatio(window.devicePixelRatio); // For retina
 
     // Appends canvas
