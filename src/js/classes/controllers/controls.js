@@ -16,10 +16,10 @@ export default class Controls {
         controls.minDistance = 1;
         controls.maxDistance = 150;
         controls.keys = {
-            LEFT: 37, //left arrow
-            UP: 38, // up arrow
-            RIGHT: 39, // right arrow
-            BOTTOM: 40 // down arrow
+            LEFT: 0x41,
+            UP: 0x57,
+            RIGHT: 	0x44,
+            BOTTOM: 0x53
         }
         function handleMouseMove() {
             document.body.style.cursor = "grabbing";
