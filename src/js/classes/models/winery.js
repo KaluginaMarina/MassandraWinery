@@ -300,8 +300,8 @@ export default class Winery {
         let group = new Group();
 
         // Tower roof
-        const roofGeometry = new CylinderBufferGeometry(0, LOGIC_CUBE_SIZE * 2.2, 4, 4);
-        const cylinder = new Mesh(roofGeometry, new MeshStandardMaterial());
+        let roofGeometry = new CylinderBufferGeometry(0, LOGIC_CUBE_SIZE * 2.2, 4, 4);
+        let cylinder = new Mesh(roofGeometry, new MeshStandardMaterial());
         cylinder.material.color.setHex(0xffffff);
         cylinder.rotation.y = (45 * Math.PI) / 180;
         cylinder.position.set(0, LOGIC_CUBE_SIZE * 5, -40);
@@ -309,15 +309,42 @@ export default class Winery {
         cylinder.updateMatrix();
         group.add(cylinder);
 
-        const roofGeometry2 = new CylinderBufferGeometry(3, LOGIC_CUBE_SIZE * 2.2, 4, 4);
-        const cylinder2 = new Mesh(roofGeometry2, new MeshStandardMaterial());
-        cylinder2.material.color.setHex(0xffffff);
+        let roofGeometry2 = new CylinderBufferGeometry(3, LOGIC_CUBE_SIZE * 2.2, 2, 4);
+        var cylinder2 = new Mesh(roofGeometry2);
         cylinder2.rotation.y = (45 * Math.PI) / 180;
-
-        cylinder2.position.set(-LOGIC_CUBE_SIZE * 12, LOGIC_CUBE_SIZE, -40);
         cylinder2.updateMatrix();
-        // group.add(cylinder2);
 
+        var res = CSG.fromMesh(cylinder2.clone());
+
+        for (var i = 1; i < 11; ++i) {
+            let geo = cylinder2.clone();
+            geo.position.set(i * 3, 0, 0);
+            geo.updateMatrix();
+            let cube_bsp = CSG.fromMesh(geo);
+            res = res.union(cube_bsp);
+        }
+
+        let box = new BoxGeometry(3 * LOGIC_CUBE_SIZE, 3.5 * LOGIC_CUBE_SIZE, 3.5 * LOGIC_CUBE_SIZE);
+        let boxMesh = new Mesh(box);
+        boxMesh.position.set(34.5, -3, 0);
+        boxMesh.updateMatrix();
+
+        let boxCSG = CSG.fromMesh(boxMesh);
+        res = res.subtract(boxCSG);
+
+        cylinder2 = CSG.toMesh(res, cylinder2.matrix);
+        cylinder2.material.color.setHex(0xffffff);
+        cylinder2.material = new MeshStandardMaterial();
+        cylinder2.castShadow = true;
+        cylinder2.receiveShadow = true;
+        cylinder2.position.set(-LOGIC_CUBE_SIZE * 11.5, LOGIC_CUBE_SIZE - 0.5, -40);
+        cylinder2.updateMatrix();
+        group.add(cylinder2);
+
+        let cylinder3 = cylinder2.clone();
+        cylinder3.rotateY(Math.PI);
+        cylinder3.position.set(  LOGIC_CUBE_SIZE * 11.5, LOGIC_CUBE_SIZE - 0.5, -40);
+        group.add(cylinder3);
         return group;
     }
 }
