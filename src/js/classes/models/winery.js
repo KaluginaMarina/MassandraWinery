@@ -56,6 +56,17 @@ export default class Winery {
         group.add(this.createLeftWall(facadeMaterial));
 
         // set windows
+        for (var i = 0; i < 3; ++i) {
+            let window = this.createWindow(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i  - 35, 0, 5*LOGIC_CUBE_SIZE - 26.8);
+            group.add(window.clone());
+        }
+
+        for (var i = 0; i < 10; i++) {
+            let window = this.createWindow(4.5 - 35.2,0, -4*LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i -28);
+            window.rotateY(Math.PI/2)
+            group.add(window.clone());
+        }
+
 
         // ====================================================
         // create right wall
