@@ -31,9 +31,9 @@ export default function x(scene) {
     // scene.add(helper);
 
 
-    var pointLight = new PointLight(0xffff55, 3);
-    pointLight.distance = 12;
-    pointLight.position.set(-35, 0, -28);
-    pointLight.castShadow = true;
-    scene.add(pointLight);
+    // var pointLight = new PointLight(0xffff55, 3);
+    // pointLight.distance = 12;
+    // pointLight.position.set(-35, 0, -28);
+    // pointLight.castShadow = true;
+    // scene.add(pointLight);
 }
