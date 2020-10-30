@@ -30,6 +30,7 @@ import Winery from "./classes/models/winery";
 import Moon from "./classes/models/moon";
 import lights from "./utils/lights";
 import {LightsAnimations} from "./classes/models/lightsAnimations";
+import * as TWEEN from "@tweenjs/tween.js";
 
 if (WEBGL.isWebGLAvailable()) {
     init();
@@ -90,10 +91,11 @@ function init() {
 
     scene.add(new Winery().winery);
 
-    // new InteractionController(scene, camera.threeCamera, container);
-    var i = 0;
+    new InteractionController(scene, camera.threeCamera, container);
 
+    var i = 0;
     function update(delta) {
+        TWEEN.update();
         particles.update(delta);
         controls.threeControls.update();
         if (i++ % 10 === 0) {

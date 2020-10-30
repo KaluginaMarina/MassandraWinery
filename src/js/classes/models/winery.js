@@ -1,22 +1,24 @@
 import {
-    BoxGeometry, CylinderBufferGeometry,
+    BoxGeometry, CylinderBufferGeometry, CylinderGeometry,
     DoubleSide,
     EquirectangularReflectionMapping,
-    Group,
+    Group, Matrix4,
     Mesh,
-    MeshBasicMaterial,
+    MeshBasicMaterial, MeshLambertMaterial,
     MeshStandardMaterial,
     PlaneGeometry,
     TextureLoader
 } from "three";
 import {CSG} from "three-csg-ts";
 import skyPanoImg from "../../../resources/img/sky-dome-panorma.jpg";
+import tweenY from "../../utils/tweenY";
 
 let FACADE_COLOR = 0xe0cfb1;
 let LOGIC_CUBE_SIZE = 3;
 
 export default class Winery {
     constructor() {
+        this.interactionObjects = [];
         this.winery = this.createWinery();
     }
 
@@ -113,6 +115,10 @@ export default class Winery {
         // ====================================================
         group.add(this.addRooms());
 
+        // ====================================================
+        // add door
+        // ====================================================
+        // group.add(this.addDoor());
         return group;
     }
 
@@ -403,5 +409,61 @@ export default class Winery {
         room.position.set(-35, 0, -28 + 3 * LOGIC_CUBE_SIZE - 1.5);
         group.add(room.clone());
         return group;
+    }
+
+    addDoor() {
+        var material = new MeshLambertMaterial({
+            color: 0xff1111,
+            wireframe: false,
+        });
+
+        const doorGeometry = new BoxGeometry(0.3, 0.5, 0.1);
+        doorGeometry.applyMatrix4(new Matrix4().makeTranslation(-0.15, -0.1, -0.5));
+
+        doorGeometry.center();
+
+        doorGeometry.applyMatrix4(new Matrix4().makeTranslation(0.2, 0, 0));
+
+        const woodMaterial = material.clone();
+        woodMaterial.color.setHex(0x876a14);
+
+        const reflectiveMaterial = material.clone();
+        reflectiveMaterial.color.setHex(0xffffff);
+        reflectiveMaterial.reflectivity = 0.8;
+
+        const doorMaterial = [
+            woodMaterial,
+            woodMaterial,
+            woodMaterial,
+            woodMaterial,
+            woodMaterial,
+            woodMaterial,
+            reflectiveMaterial,
+            reflectiveMaterial,
+            reflectiveMaterial,
+        ];
+
+        const knobGeometry = new CylinderGeometry(0.02, 0.02, 0.01, 16);
+        knobGeometry.applyMatrix4(new Matrix4().makeRotationX(Math.PI / 2));
+        knobGeometry.applyMatrix4(new Matrix4().makeTranslation(0.3, 0, -0.05));
+        doorGeometry.merge(knobGeometry, knobGeometry.matrix, 6);
+
+        const door = new Mesh(doorGeometry, doorMaterial);
+        door.position.set(-0.35, 0.3, -0.45);
+
+        door.castShadow = true;
+        door.userData.interact = function () {
+            if (door.rotation.y === 0) {
+                tweenY(door, (-75 * Math.PI) / 180);
+
+            } else {
+                tweenY(door, 0);
+
+            }
+        }.bind(door);
+
+        this.interactionObjects.push(door);
+
+        return door;
     }
 }

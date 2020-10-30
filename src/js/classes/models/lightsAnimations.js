@@ -24,7 +24,7 @@ export class LightsAnimations {
             return;
         }
         if (this.pointLight.visible) {
-            this.time = (this.getRandomInt(40) + 10);
+            this.time = (this.getRandomInt(30) + 30);
             this.pointLight.visible = false;
         } else {
             this.time = (this.getRandomInt(20) + 10);
