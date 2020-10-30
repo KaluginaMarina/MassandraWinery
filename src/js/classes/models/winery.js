@@ -224,7 +224,7 @@ export default class Winery {
 
         let floor3 = floor.clone();
         floor.position.set(0, 1.5, -40);
-        group.add(floor2);
+        group.add(floor3);
         return group;
     }
 
@@ -326,7 +326,7 @@ export default class Winery {
 
         let box = new BoxGeometry(3 * LOGIC_CUBE_SIZE, 3.5 * LOGIC_CUBE_SIZE, 3.5 * LOGIC_CUBE_SIZE);
         let boxMesh = new Mesh(box);
-        boxMesh.position.set(34.5, -3, 0);
+        boxMesh.position.set(35.1, -3, 0);
         boxMesh.updateMatrix();
 
         let boxCSG = CSG.fromMesh(boxMesh);
@@ -337,14 +337,41 @@ export default class Winery {
         cylinder2.material = new MeshStandardMaterial();
         cylinder2.castShadow = true;
         cylinder2.receiveShadow = true;
-        cylinder2.position.set(-LOGIC_CUBE_SIZE * 11.5, LOGIC_CUBE_SIZE - 0.5, -40);
+        cylinder2.position.set(-LOGIC_CUBE_SIZE * 11.7, LOGIC_CUBE_SIZE - 0.5, -40);
         cylinder2.updateMatrix();
         group.add(cylinder2);
 
         let cylinder3 = cylinder2.clone();
         cylinder3.rotateY(Math.PI);
-        cylinder3.position.set(  LOGIC_CUBE_SIZE * 11.5, LOGIC_CUBE_SIZE - 0.5, -40);
+        cylinder3.position.set(LOGIC_CUBE_SIZE * 11.7, LOGIC_CUBE_SIZE - 0.5, -40);
         group.add(cylinder3);
+
+        let cylinder4 = cylinder3.clone();
+        cylinder4.rotateY(-Math.PI / 2);
+        cylinder4.position.set(LOGIC_CUBE_SIZE * 11.7, LOGIC_CUBE_SIZE - 0.5, -16);
+
+        let boxMesh1 = new Mesh(new BoxGeometry(10, 10, 10));
+        boxMesh1.position.set(LOGIC_CUBE_SIZE * 11.7, LOGIC_CUBE_SIZE - 0.5, -43);
+
+        cylinder4 = this.substr(cylinder4, boxMesh1);
+        cylinder4.material.color.setHex(0xffffff);
+        cylinder4.material = new MeshStandardMaterial();
+        cylinder4.castShadow = true;
+        cylinder4.receiveShadow = true;
+        cylinder4.updateMatrix();
+        group.add(cylinder4);
+
+        let cylinder5 = cylinder4.clone();
+        cylinder5.position.set(-LOGIC_CUBE_SIZE * 11.7, LOGIC_CUBE_SIZE - 0.5, -16);
+        group.add(cylinder5);
         return group;
+    }
+
+    substr(mesh1, mesh2) {
+        mesh1.updateMatrix();
+        mesh2.updateMatrix();
+        let box = CSG.fromMesh(mesh1);
+        let cut = CSG.fromMesh(mesh2);
+        return CSG.toMesh(box.subtract(cut), mesh1.matrix);
     }
 }
