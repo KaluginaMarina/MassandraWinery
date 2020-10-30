@@ -118,7 +118,7 @@ export default class Winery {
         // ====================================================
         // add door
         // ====================================================
-        // group.add(this.addDoor());
+        group.add(this.addDoor());
         return group;
     }
 
@@ -417,12 +417,12 @@ export default class Winery {
             wireframe: false,
         });
 
-        const doorGeometry = new BoxGeometry(0.3, 0.5, 0.1);
-        doorGeometry.applyMatrix4(new Matrix4().makeTranslation(-0.15, -0.1, -0.5));
+        const doorGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE * 1.5, 0.6 * LOGIC_CUBE_SIZE * 1.5, 0.1 * LOGIC_CUBE_SIZE);
+        doorGeometry.applyMatrix4(new Matrix4().makeTranslation(-0.15 * LOGIC_CUBE_SIZE * 1.5, -0.1 * LOGIC_CUBE_SIZE * 1.5, -0.5 * LOGIC_CUBE_SIZE));
 
         doorGeometry.center();
 
-        doorGeometry.applyMatrix4(new Matrix4().makeTranslation(0.2, 0, 0));
+        doorGeometry.applyMatrix4(new Matrix4().makeTranslation(0.2 * LOGIC_CUBE_SIZE * 1.5, 0, 0));
 
         const woodMaterial = material.clone();
         woodMaterial.color.setHex(0x876a14);
@@ -443,13 +443,13 @@ export default class Winery {
             reflectiveMaterial,
         ];
 
-        const knobGeometry = new CylinderGeometry(0.02, 0.02, 0.01, 16);
+        const knobGeometry = new CylinderGeometry(0.02 * LOGIC_CUBE_SIZE * 1.5, 0.02 * LOGIC_CUBE_SIZE * 1.5, 0.01 * LOGIC_CUBE_SIZE * 1.5, 16);
         knobGeometry.applyMatrix4(new Matrix4().makeRotationX(Math.PI / 2));
-        knobGeometry.applyMatrix4(new Matrix4().makeTranslation(0.3, 0, -0.05));
+        knobGeometry.applyMatrix4(new Matrix4().makeTranslation(0.3 * LOGIC_CUBE_SIZE * 1.5, 0, 0.05 * LOGIC_CUBE_SIZE));
         doorGeometry.merge(knobGeometry, knobGeometry.matrix, 6);
 
         const door = new Mesh(doorGeometry, doorMaterial);
-        door.position.set(-0.35, 0.3, -0.45);
+        door.position.set(-1.5/2, -0.3, -35.5);
 
         door.castShadow = true;
         door.userData.interact = function () {

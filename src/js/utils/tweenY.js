@@ -10,7 +10,5 @@ export default function tweenY(object, rotation) {
             800
         )
         .easing(TWEEN.Easing.Sinusoidal.InOut)
-        // .easing( TWEEN.Easing.Quadratic.InOut)
-        // .easing( TWEEN.Easing.Elastic.Out)
         .start();
 }
