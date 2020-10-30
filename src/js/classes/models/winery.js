@@ -45,6 +45,7 @@ export default class Winery {
 
         // set windows
         for (var i = 0; i < 19; ++i) {
+            if (i === 9) continue;
             let window = this.createWindow(-9 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, -40 + 4.4);
             group.add(window.clone());
         }
@@ -249,14 +250,19 @@ export default class Winery {
         // windows box
         let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 4);
 
-
         for (var i = 0; i < 19; i++) {
+            if (i === 9) continue;
             let windowMash = new Mesh(windowGeometry.clone());
             windowMash.position.set(-9 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, 4.5);
             windowMash.updateMatrix();
             let subtract_bsp = CSG.fromMesh(windowMash);
             emptyCube = emptyCube.subtract(subtract_bsp);
         }
+
+        let doorGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE * 1.5, 0.6 * LOGIC_CUBE_SIZE * 1.5, 10);
+        let doorMash = new Mesh(doorGeometry);
+        doorMash.position.set(0,0,3);
+        emptyCube = emptyCube.subtract(CSG.fromMesh(doorMash));
 
         // cut windows box
         let mainWallMesh = CSG.toMesh(emptyCube, mainWall.matrix);
@@ -388,7 +394,7 @@ export default class Winery {
 
     addRooms() {
         let group = new Group();
-        let geometry = new PlaneGeometry(LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 32);
+        let geometry = new PlaneGeometry(LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 2);
         let room = new Mesh(geometry, new MeshStandardMaterial({color: 0x888888, side: DoubleSide}));
         room.rotateZ(Math.PI / 2)
         room.rotateX(Math.PI / 2);
@@ -449,7 +455,7 @@ export default class Winery {
         doorGeometry.merge(knobGeometry, knobGeometry.matrix, 6);
 
         const door = new Mesh(doorGeometry, doorMaterial);
-        door.position.set(-1.5/2, -0.3, -35.5);
+        door.position.set(-1.5/2 - 0.15, -0.3, -35.6);
 
         door.castShadow = true;
         door.userData.interact = function () {
@@ -458,7 +464,6 @@ export default class Winery {
 
             } else {
                 tweenY(door, 0);
-
             }
         }.bind(door);
 
