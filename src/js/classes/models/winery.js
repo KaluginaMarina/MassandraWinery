@@ -108,6 +108,11 @@ export default class Winery {
         // ====================================================
         group.add(this.createRoof())
 
+        // ====================================================
+        // add rooms
+        // ====================================================
+        group.add(this.addRooms());
+
         return group;
     }
 
@@ -373,5 +378,30 @@ export default class Winery {
         let box = CSG.fromMesh(mesh1);
         let cut = CSG.fromMesh(mesh2);
         return CSG.toMesh(box.subtract(cut), mesh1.matrix);
+    }
+
+    addRooms() {
+        let group = new Group();
+        let geometry = new PlaneGeometry(LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 32);
+        let room = new Mesh(geometry, new MeshStandardMaterial({color: 0x888888, side: DoubleSide}));
+        room.rotateZ(Math.PI / 2)
+        room.rotateX(Math.PI / 2);
+        room.castShadow = true;
+        room.receiveShadow = true;
+        room.receiveShadow = true;
+        room.castShadow = true;
+
+        for (var i = -3; i < 3; ++i) {
+            room.position.set(-4.5 - 3 * LOGIC_CUBE_SIZE * i, 0, -40);
+            group.add(room.clone());
+        }
+
+        room.rotateX(Math.PI / 2);
+        room.position.set(35, 0, -28 + 3 * LOGIC_CUBE_SIZE - 1.5);
+        group.add(room.clone());
+
+        room.position.set(-35, 0, -28 + 3 * LOGIC_CUBE_SIZE - 1.5);
+        group.add(room.clone());
+        return group;
     }
 }

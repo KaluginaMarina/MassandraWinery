@@ -69,10 +69,20 @@ function init() {
     Lights.default(scene);
     let lights = [new LightsAnimations(-35, 0, -28, scene),
         new LightsAnimations(0, 0, -40, scene),
+        new LightsAnimations(6, 0, -40, scene),
+        new LightsAnimations(12, 0, -40, scene),
+        new LightsAnimations(18, 0, -40, scene),
+        new LightsAnimations(-6, 0, -40, scene),
+        new LightsAnimations(-12, 0, -40, scene),
+        new LightsAnimations(-18, 0, -40, scene),
+        new LightsAnimations(-24, 0, -40, scene),
+        new LightsAnimations(24, 0, -40, scene),
         new LightsAnimations(0, 3, -40, scene),
         new LightsAnimations(0, 6, -40, scene),
         new LightsAnimations(0, 9, -40, scene),
-        new LightsAnimations(35, 0, -28, scene)
+        new LightsAnimations(35, 0, -28, scene),
+        new LightsAnimations(-35, 0, -18, scene),
+        new LightsAnimations(35, 0, -18, scene)
     ];
 
     // MOON
@@ -81,12 +91,15 @@ function init() {
     scene.add(new Winery().winery);
 
     // new InteractionController(scene, camera.threeCamera, container);
+    var i = 0;
 
     function update(delta) {
         particles.update(delta);
         controls.threeControls.update();
-        for (var l in lights) {
-            lights[l].checkLights();
+        if (i++ % 10 === 0) {
+            for (var l in lights) {
+                lights[l].checkLights();
+            }
         }
     }
 
