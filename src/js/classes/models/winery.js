@@ -259,9 +259,10 @@ export default class Winery {
             emptyCube = emptyCube.subtract(subtract_bsp);
         }
 
-        let doorGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE * 1.5, 0.6 * LOGIC_CUBE_SIZE * 1.5, 10);
+        let doorGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE * 1.5, 0.6 * LOGIC_CUBE_SIZE * 1.5, 3);
         let doorMash = new Mesh(doorGeometry);
-        doorMash.position.set(0,0,3);
+        doorMash.position.set(0,0,5);
+        doorMash.updateMatrix();
         emptyCube = emptyCube.subtract(CSG.fromMesh(doorMash));
 
         // cut windows box
