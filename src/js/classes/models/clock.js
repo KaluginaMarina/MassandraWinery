@@ -15,7 +15,7 @@ export default class TowerClock{
     createClock(){
         let group = new Group();
 
-        let geometry = new CylinderGeometry(1.6, 1.6, 0.1, 52)
+        let geometry = new CylinderGeometry(2.1, 2.1, 0.1, 52)
         let material = new MeshPhongMaterial({color: 0x999999});
         let clock = new Mesh(geometry, material);
         clock.position.y -= 0.01;
@@ -23,7 +23,7 @@ export default class TowerClock{
         clock.receiveShadow = true;
         group.add(clock);
 
-        geometry = new CylinderGeometry(1.5, 1.5, 0.1, 52)
+        geometry = new CylinderGeometry(2, 2, 0.1, 52)
         material = new MeshPhongMaterial({color: 0xffffff});
         clock = new Mesh(geometry, material);
         clock.castShadow = true;
@@ -36,16 +36,16 @@ export default class TowerClock{
     }
 
     createArrow(isSec){
-        let size = 2;
+        let size = 2.8;
         if (isSec) {
-            size = 2.8;
+            size = 3.8;
         }
         let arrowGeometry = new BoxGeometry(size, 0.1, 0.05);
         let material = new MeshPhongMaterial({color: 0x444444});
         let arrow = new Mesh(arrowGeometry, material);
 
-        let box = new Mesh(new BoxGeometry(3, 0.1, 0.05));
-        box.position.x = -1.5;
+        let box = new Mesh(new BoxGeometry(4, 0.1, 0.05));
+        box.position.x = -2;
         arrow = this.substr(arrow, box);
         arrow.material = material;
         arrow.castShadow = true;
