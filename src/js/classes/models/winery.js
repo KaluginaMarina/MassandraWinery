@@ -4,7 +4,7 @@ import {
     EquirectangularReflectionMapping,
     Group, Matrix4,
     Mesh,
-    MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial,
+    MeshLambertMaterial, MeshPhongMaterial,
     MeshStandardMaterial,
     PlaneGeometry,
     TextureLoader
@@ -161,6 +161,45 @@ export default class Winery {
         leftWall.updateMatrix();
 
         let emptyCube = this.createEmptyBox(leftWall);
+        // Рельеф
+        let reliefG = new BoxGeometry(3 * LOGIC_CUBE_SIZE, 0.2, 0.1);
+        let relief = new Mesh(reliefG);
+        relief.position.set(0, 0.9, 11/2*LOGIC_CUBE_SIZE);
+        relief.updateMatrix();
+        let union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        relief = new Mesh(reliefG);
+        relief.position.set(0, 0.3, 11/2*LOGIC_CUBE_SIZE);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        relief = new Mesh(reliefG);
+        relief.position.set(0, -0.9, 11/2*LOGIC_CUBE_SIZE);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        // Рельеф
+        reliefG = new BoxGeometry(0.1, 0.2, 11 * LOGIC_CUBE_SIZE);
+        relief = new Mesh(reliefG);
+        relief.position.set(3/2 * LOGIC_CUBE_SIZE, 0.9, 0);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        relief = new Mesh(reliefG);
+        relief.position.set(3/2 * LOGIC_CUBE_SIZE, 0.3, 0);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        relief = new Mesh(reliefG);
+        relief.position.set(3/2 * LOGIC_CUBE_SIZE, -0.9, 0);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
 
         // windows box
         let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 4);
@@ -198,6 +237,46 @@ export default class Winery {
         rightWall.updateMatrix();
 
         let emptyCube = this.createEmptyBox(rightWall);
+
+        // Рельеф
+        let reliefG = new BoxGeometry(3 * LOGIC_CUBE_SIZE, 0.2, 0.1);
+        let relief = new Mesh(reliefG);
+        relief.position.set(0, 0.9, 11/2*LOGIC_CUBE_SIZE);
+        relief.updateMatrix();
+        let union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        relief = new Mesh(reliefG);
+        relief.position.set(0, 0.3, 11/2*LOGIC_CUBE_SIZE);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        relief = new Mesh(reliefG);
+        relief.position.set(0, -0.9, 11/2*LOGIC_CUBE_SIZE);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        // Рельеф
+        reliefG = new BoxGeometry(0.1, 0.2, 11 * LOGIC_CUBE_SIZE);
+        relief = new Mesh(reliefG);
+        relief.position.set(-3/2 * LOGIC_CUBE_SIZE, 0.9, 0);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        relief = new Mesh(reliefG);
+        relief.position.set(-3/2 * LOGIC_CUBE_SIZE, 0.3, 0);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        relief = new Mesh(reliefG);
+        relief.position.set(-3/2 * LOGIC_CUBE_SIZE, -0.9, 0);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
 
         // windows box
         let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 4);
@@ -261,6 +340,26 @@ export default class Winery {
         mainWall.updateMatrix();
 
         let emptyCube = this.createEmptyBox(mainWall);
+
+        // Рельеф
+        let reliefG = new BoxGeometry(26 * LOGIC_CUBE_SIZE, 0.2, 0.1);
+        let relief = new Mesh(reliefG);
+        relief.position.set(0, 0.9, 1.5*LOGIC_CUBE_SIZE);
+        relief.updateMatrix();
+        let union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        relief = new Mesh(reliefG);
+        relief.position.set(0, 0.3, 1.5*LOGIC_CUBE_SIZE);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
+
+        relief = new Mesh(reliefG);
+        relief.position.set(0, -0.9, 1.5*LOGIC_CUBE_SIZE);
+        relief.updateMatrix();
+        union = CSG.fromMesh(relief);
+        emptyCube = emptyCube.union(union);
 
         // windows box
         let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 4);
@@ -539,7 +638,7 @@ export default class Winery {
         balcony = balcony.clone()
         balcony.position.set(2.4 * LOGIC_CUBE_SIZE / 2, 1.3, LOGIC_CUBE_SIZE / 4.5 - LOGIC_CUBE_SIZE / 4);
         group.add(balcony);
-        
+
         group.add(groupCylinder);
         group.position.set(0, 4.5, -35);
         return group;
