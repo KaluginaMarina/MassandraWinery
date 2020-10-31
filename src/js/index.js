@@ -55,7 +55,11 @@ function init() {
     );
     controls.threeControls.update();
 
-    let bird = new Bird(scene);
+    let birds = [new Bird(scene, -20, -1.2, -20, 10, 1, -Math.PI/8),
+        new Bird(scene, -16, -1.2, -16, 20, 1.1, Math.PI/8),
+        new Bird(scene, -33,  3.8, -33, 15, 0.8, Math.PI/8),
+        new Bird(scene, -14,  -1.2, -23, 25, 0.9, 5/4*Math.PI),
+    ];
 
     // let particles = new Particles(scene);
     let particles = new SnowParticles(scene);
@@ -106,7 +110,10 @@ function init() {
                 lights[l].checkLights();
             }
         }
-        bird.update();
+
+        for (var bird in birds) {
+            birds[bird].update();
+        }
     }
 
     function animate() {
