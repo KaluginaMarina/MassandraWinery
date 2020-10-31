@@ -86,7 +86,6 @@ function init() {
         new LightsAnimations(-24, 0, -40, scene),
         new LightsAnimations(24, 0, -40, scene),
         new LightsAnimations(0, 3, -40, scene),
-        new LightsAnimations(0, 6, -40, scene),
         new LightsAnimations(0, 9, -40, scene),
         new LightsAnimations(35, 0, -28, scene),
         new LightsAnimations(-35, 0, -18, scene),
@@ -96,7 +95,12 @@ function init() {
     // MOON
     scene.add(new Moon().moon);
 
-    scene.add(new Winery().winery);
+    scene.add(new Winery(true).winery);
+
+    let winery = new Winery(false).winery;
+    winery.rotateX(Math.PI);
+    winery.rotateZ(Math.PI);
+    scene.add(winery);
 
     new InteractionController(scene, camera.threeCamera, container);
 

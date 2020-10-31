@@ -17,20 +17,20 @@ let FACADE_COLOR = 0xe0cfb1;
 let LOGIC_CUBE_SIZE = 3;
 
 export default class Winery {
-    constructor() {
+    constructor(isMain) {
         this.interactionObjects = [];
-        this.winery = this.createWinery();
+        this.winery = this.createWinery(isMain);
     }
 
-    createWinery() {
+    createWinery(isMain) {
         var group = new Group();
 
-        group.add(this.createFacade());
+        group.add(this.createFacade(isMain));
         return group;
     }
 
 
-    createFacade() {
+    createFacade(isMain) {
         let facadeMaterial = new MeshStandardMaterial({
             color: FACADE_COLOR,
             reflectivity: 0.8
@@ -92,14 +92,19 @@ export default class Winery {
         // create tower
         // ====================================================
 
-        let tower = this.createTower(facadeMaterial);
+        let tower = this.createTower(facadeMaterial, isMain);
         group.add(tower);
 
         // add floor in tower
         group.add(this.createFloor());
 
+        let n = 4;
+        if (isMain) {
+            n = 3;
+        }
+
         // set windows
-        for (var j = 1; j < 4; ++j) {
+        for (var j = 1; j < n; ++j) {
             for (var i = 0; i < 3; ++i) {
                 let window = this.createWindow(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, j * LOGIC_CUBE_SIZE, -40 + 4.4);
                 group.add(window.clone());
@@ -279,7 +284,12 @@ export default class Winery {
         return mainWallMesh;
     }
 
-    createTower(facadeMaterial) {
+    createTower(facadeMaterial, isMain) {
+        let n = 3
+        if (isMain) {
+            n = 2
+        }
+
         let geometry2 = new BoxGeometry(3 * LOGIC_CUBE_SIZE, 4 * LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE);
         let tower = new Mesh(geometry2);
         tower.updateMatrix();
@@ -287,7 +297,7 @@ export default class Winery {
         let emptyTower = this.createEmptyBox(tower);
 
         let windowGeometrySmall = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 5);
-        for (var j = 0; j < 3; ++j) {
+        for (var j = 0; j < n; ++j) {
             for (var i = 0; i < 3; i++) {
                 let windowMash = new Mesh(windowGeometrySmall.clone());
                 windowMash.position.set(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, -4 + j * LOGIC_CUBE_SIZE, 4.5);

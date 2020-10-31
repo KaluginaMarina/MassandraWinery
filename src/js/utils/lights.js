@@ -30,4 +30,9 @@ export default function x(scene) {
     // var helper = new CameraHelper(dirLight.shadow.camera);
     // scene.add(helper);
 
+    let pointLight = new PointLight(0xffff55, 3);
+    pointLight.distance = 12;
+    pointLight.position.set(0, 0, 40);
+    pointLight.castShadow = true;
+    scene.add(pointLight);
 }
