@@ -1,7 +1,7 @@
 import {CylinderGeometry, Mesh, MeshPhongMaterial, Group, BoxGeometry} from "three";
 import {CSG} from "three-csg-ts";
 
-export default class TowerClock{
+export default class TowerClock {
     constructor() {
         this.clock = this.createClock();
         this.arrowS = this.createArrow(true);
@@ -12,10 +12,10 @@ export default class TowerClock{
         this.i = 0;
     }
 
-    createClock(){
+    createClock() {
         let group = new Group();
 
-        let geometry = new CylinderGeometry(2.1, 2.1, 0.1, 52)
+        let geometry = new CylinderGeometry(2.1, 2.1, 0.1, 52);
         let material = new MeshPhongMaterial({color: 0x999999});
         let clock = new Mesh(geometry, material);
         clock.position.y -= 0.01;
@@ -30,12 +30,12 @@ export default class TowerClock{
         clock.receiveShadow = true;
         group.add(clock);
 
-        group.rotateX(Math.PI/2);
+        group.rotateX(Math.PI / 2);
         group.position.set(0, 10, -35.5);
         return group;
     }
 
-    createArrow(isSec){
+    createArrow(isSec) {
         let size = 2.8;
         if (isSec) {
             size = 3.8;
@@ -54,7 +54,7 @@ export default class TowerClock{
         return arrow;
     }
 
-    updateArrow(){
+    updateArrow() {
         let cur_sec = parseInt(new Date().getTime() / 1000) % 60;
         if (cur_sec !== this.second) {
             this.i++;

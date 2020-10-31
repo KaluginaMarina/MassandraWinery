@@ -1,4 +1,4 @@
-import {BoxGeometry, Mesh, MeshPhongMaterial, Group} from "three";
+import {BoxGeometry, Mesh, MeshPhongMaterial, Group, CylinderGeometry} from "three";
 
 export default class Bird {
     // x, y, z - coordinates
@@ -71,7 +71,7 @@ export default class Bird {
 
     creatPaws() {
         let group = new Group();
-        let pawG = new BoxGeometry(0.07, 0.3, 0.07);
+        let pawG = new CylinderGeometry(0.07 / 2, 0.07 / 2, 0.3, 52)
         let material = new MeshPhongMaterial({color: 0xff6600});
         let paw = new Mesh(pawG, material);
         paw.position.set(0, -0.2, 0.05);

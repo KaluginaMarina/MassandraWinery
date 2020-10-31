@@ -4,7 +4,7 @@ import {
     EquirectangularReflectionMapping,
     Group, Matrix4,
     Mesh,
-    MeshBasicMaterial, MeshLambertMaterial,
+    MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial,
     MeshStandardMaterial,
     PlaneGeometry,
     TextureLoader
@@ -125,6 +125,12 @@ export default class Winery {
         // add door
         // ====================================================
         group.add(this.addDoor());
+
+        // ====================================================
+        // add balcony
+        // ====================================================
+        group.add(this.addBalcony());
+
         return group;
     }
 
@@ -270,7 +276,7 @@ export default class Winery {
 
         let doorGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE * 1.5, 0.6 * LOGIC_CUBE_SIZE * 1.5, 3);
         let doorMash = new Mesh(doorGeometry);
-        doorMash.position.set(0,0,5);
+        doorMash.position.set(0, 0, 5);
         doorMash.updateMatrix();
         emptyCube = emptyCube.subtract(CSG.fromMesh(doorMash));
 
@@ -470,7 +476,7 @@ export default class Winery {
         doorGeometry.merge(knobGeometry, knobGeometry.matrix, 6);
 
         const door = new Mesh(doorGeometry, doorMaterial);
-        door.position.set(-1.5/2 - 0.15, -0.3, -35.6);
+        door.position.set(-1.5 / 2 - 0.15, -0.3, -35.6);
 
         door.castShadow = true;
         door.userData.interact = function () {
@@ -485,5 +491,57 @@ export default class Winery {
         this.interactionObjects.push(door);
 
         return door;
+    }
+
+    addBalcony() {
+        let group = new Group();
+
+        let geometry = new BoxGeometry(2.5 * LOGIC_CUBE_SIZE, 0.2, LOGIC_CUBE_SIZE / 2);
+        let material = new MeshPhongMaterial({color: 0xaaaaaa});
+        let balcony = new Mesh(geometry, material);
+        balcony.castShadow = true;
+        balcony.receiveShadow = true;
+        group.add(balcony);
+
+        let groupCylinder = new Group();
+        let cylinderG = new CylinderGeometry(0.1, 0.06, 0.4, 52);
+        let cylinderG1 = new CylinderGeometry(0.06, 0.06, 0.4, 52);
+        let cylinderG2 = new CylinderGeometry(0.06, 0.1, 0.4, 52);
+        let materialCylinder = new MeshPhongMaterial({color: 0xffffff});
+        let cylinder = new Mesh(cylinderG, materialCylinder);
+        groupCylinder.add(cylinder)
+        cylinder = new Mesh(cylinderG1, materialCylinder);
+        cylinder.position.y -= 0.4;
+        groupCylinder.add(cylinder);
+        cylinder = new Mesh(cylinderG2, materialCylinder);
+        cylinder.position.y -= 0.8;
+        groupCylinder.add(cylinder);
+
+        for (var i = 0; i < 7; ++i) {
+            groupCylinder.position.set(-2.4 * LOGIC_CUBE_SIZE / 2 + i * 1.2, 1.1, LOGIC_CUBE_SIZE / 4.5);
+            group.add(groupCylinder.clone())
+        }
+
+        geometry = new BoxGeometry(2.5 * LOGIC_CUBE_SIZE, 0.1, 0.2);
+        balcony = new Mesh(geometry, material);
+        balcony.castShadow = true;
+        balcony.receiveShadow = true;
+        balcony.position.set(0, 1.3, LOGIC_CUBE_SIZE / 4.5);
+        group.add(balcony);
+
+        geometry = new BoxGeometry(0.2, 0.1, LOGIC_CUBE_SIZE / 2);
+        balcony = new Mesh(geometry, material);
+        balcony.castShadow = true;
+        balcony.receiveShadow = true;
+        balcony.position.set(-2.4 * LOGIC_CUBE_SIZE / 2, 1.3, LOGIC_CUBE_SIZE / 4.5 - LOGIC_CUBE_SIZE / 4);
+        group.add(balcony);
+
+        balcony = balcony.clone()
+        balcony.position.set(2.4 * LOGIC_CUBE_SIZE / 2, 1.3, LOGIC_CUBE_SIZE / 4.5 - LOGIC_CUBE_SIZE / 4);
+        group.add(balcony);
+        
+        group.add(groupCylinder);
+        group.position.set(0, 4.5, -35);
+        return group;
     }
 }
