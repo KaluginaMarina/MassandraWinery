@@ -231,11 +231,15 @@ export default class Winery {
         group.add(floor);
 
         let floor2 = floor.clone();
-        floor.position.set(0, 7.5, -40);
+        floor2.position.set(0, 7.5, -40);
         group.add(floor2);
 
+        let floor4 = floor.clone();
+        floor4.position.set(0, 10.5, -40);
+        group.add(floor4);
+
         let floor3 = floor.clone();
-        floor.position.set(0, 1.5, -40);
+        floor3.position.set(0, 1.5, -40);
         group.add(floor3);
         return group;
     }

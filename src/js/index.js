@@ -31,6 +31,7 @@ import Moon from "./classes/models/moon";
 import lights from "./utils/lights";
 import {LightsAnimations} from "./classes/models/lightsAnimations";
 import * as TWEEN from "@tweenjs/tween.js";
+import Bird from "./classes/models/bird";
 
 if (WEBGL.isWebGLAvailable()) {
     init();
@@ -53,6 +54,8 @@ function init() {
         renderer.threeRenderer.domElement
     );
     controls.threeControls.update();
+
+    let bird = new Bird(scene);
 
     // let particles = new Particles(scene);
     let particles = new SnowParticles(scene);
@@ -103,6 +106,7 @@ function init() {
                 lights[l].checkLights();
             }
         }
+        bird.update();
     }
 
     function animate() {
