@@ -30,8 +30,15 @@ export default class TowerClock {
         clock.receiveShadow = true;
         group.add(clock);
 
+        let knobGeometry = new CylinderGeometry(0.1, 0.1, 0.01 * 2 * 1.5, 16);
+        material = new MeshPhongMaterial({color: 0x444444});
+        let knob = new Mesh(knobGeometry, material);
+        knob.position.y += 0.1;
+        group.add(knob);
+
         group.rotateX(Math.PI / 2);
         group.position.set(0, 10, -35.5);
+
         return group;
     }
 

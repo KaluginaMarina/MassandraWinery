@@ -33,7 +33,11 @@ export default class Winery {
     createFacade(isMain) {
         let facadeMaterial = new MeshStandardMaterial({
             color: FACADE_COLOR,
-            reflectivity: 0.8
+            reflectivity: 0.8,
+            roughness: 0.5,
+            flatShading: true,
+            vertexColors: true,
+            // map: brinks
         });
 
         let group = new Group();
@@ -65,7 +69,7 @@ export default class Winery {
         }
 
         for (var i = 0; i < 10; i++) {
-            let window = this.createWindow(4.5 - 35.2, 0, -4 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i - 28, Math.PI / 2);
+            let window = this.createWindow(4.5 - 35.1, 0, -4 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i - 28, Math.PI / 2);
             group.add(window.clone());
         }
 
@@ -82,7 +86,7 @@ export default class Winery {
         }
 
         for (var i = 0; i < 10; i++) {
-            let window = this.createWindow(-4.5 + 35.2, 0, -4 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i - 28, Math.PI / 2);
+            let window = this.createWindow(-4.5 + 35.1, 0, -4 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i - 28, Math.PI / 2);
             group.add(window.clone());
         }
 
@@ -129,6 +133,46 @@ export default class Winery {
         // ====================================================
         group.add(this.addBalcony());
 
+        // ====================================================
+        // add visors
+        // ====================================================
+        let visor = this.addVisor();
+        visor.position.set(-7 * LOGIC_CUBE_SIZE - 0.4, 1.1, -35.3);
+        group.add(visor);
+
+        visor = this.addVisor();
+        visor.position.set(-4 * LOGIC_CUBE_SIZE - 0.4, 1.1, -35.3);
+        group.add(visor);
+
+
+        visor = this.addVisor();
+        visor.position.set(7 * LOGIC_CUBE_SIZE - 0.4, 1.1, -35.3);
+        group.add(visor);
+
+        visor = this.addVisor();
+        visor.position.set(4 * LOGIC_CUBE_SIZE - 0.4, 1.1, -35.3);
+        group.add(visor);
+
+        visor = this.addVisor();
+        visor.rotateY(Math.PI / 2);
+        visor.position.set(-30.4, 1.1, -39.6 + 4 * LOGIC_CUBE_SIZE);
+        group.add(visor);
+
+        visor = this.addVisor();
+        visor.rotateY(Math.PI / 2);
+        visor.position.set(-30.4, 1.1, -39.6 + 7 * LOGIC_CUBE_SIZE);
+        group.add(visor);
+
+        visor = this.addVisor();
+        visor.rotateY(Math.PI / 2);
+        visor.position.set(30.4, 1.1, -39.6 + 4 * LOGIC_CUBE_SIZE);
+        group.add(visor);
+
+        visor = this.addVisor();
+        visor.rotateY(Math.PI / 2);
+        visor.position.set(30.4, 1.1, -39.6 + 7 * LOGIC_CUBE_SIZE);
+        group.add(visor);
+
         return group;
     }
 
@@ -155,7 +199,7 @@ export default class Winery {
         group.add(window);
 
         //frame
-        let frameGeometry = new BoxGeometry(0.1, 0.6 * LOGIC_CUBE_SIZE, 0.5);
+        let frameGeometry = new BoxGeometry(0.1, 0.6 * LOGIC_CUBE_SIZE + 0.1, 0.5);
         let material = new MeshPhongMaterial({color: 0x777777});
         let frame = new Mesh(frameGeometry, material);
         frame.position.set(0.3 / 2 * LOGIC_CUBE_SIZE, 0, 0);
@@ -170,16 +214,16 @@ export default class Winery {
 
         frameGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.1, 0.5);
         frame = new Mesh(frameGeometry, material);
-        frame.position.set(0, 0.6/2 * LOGIC_CUBE_SIZE, 0);
+        frame.position.set(0, 0.6 / 2 * LOGIC_CUBE_SIZE, 0);
         group.add(frame);
 
         frame = frame.clone();
-        frame.position.set(0, -0.6/2 * LOGIC_CUBE_SIZE, 0);
+        frame.position.set(0, -0.6 / 2 * LOGIC_CUBE_SIZE, 0);
         group.add(frame);
 
         frameGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.07, 0.2);
         frame = new Mesh(frameGeometry, material);
-        frame.position.set(0, -0.6/4 * LOGIC_CUBE_SIZE, 0);
+        frame.position.set(0, -0.6 / 4 * LOGIC_CUBE_SIZE, 0);
         group.add(frame);
 
         return group;
@@ -672,6 +716,36 @@ export default class Winery {
 
         group.add(groupCylinder);
         group.position.set(0, 4.5, -35);
+        return group;
+    }
+
+    addVisor() {
+        let group = new Group();
+
+        let geometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.1, 0.2);
+        let material = new MeshPhongMaterial({color: 0xffffff});
+        let visor = new Mesh(geometry, material);
+
+        visor.rotateZ(Math.PI / 8);
+        group.add(visor);
+
+        visor = visor.clone();
+        visor.rotateZ(-Math.PI / 4);
+        visor.position.x += 0.3 * LOGIC_CUBE_SIZE / 2 + 0.3;
+        group.add(visor);
+
+        geometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE * 0.9, 0.05, 0.15);
+        material = new MeshPhongMaterial({color: 0xe1cfc2});
+        visor = new Mesh(geometry, material);
+        visor.position.y -= 0.09;
+        visor.rotateZ(Math.PI / 8);
+        group.add(visor);
+
+        visor = visor.clone();
+        visor.rotateZ(-Math.PI / 4);
+        visor.position.x += 0.3 * LOGIC_CUBE_SIZE / 2 + 0.3;
+        group.add(visor);
+
         return group;
     }
 }
