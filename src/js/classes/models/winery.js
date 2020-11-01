@@ -46,7 +46,7 @@ export default class Winery {
         // set windows
         for (var i = 0; i < 19; ++i) {
             if (i === 9) continue;
-            let window = this.createWindow(-9 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, -40 + 4.4);
+            let window = this.createWindow(-9 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, 0, -40 + 4.4, 0);
             group.add(window.clone());
         }
 
@@ -60,13 +60,12 @@ export default class Winery {
 
         // set windows
         for (var i = 0; i < 3; ++i) {
-            let window = this.createWindow(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i - 35, 0, 5 * LOGIC_CUBE_SIZE - 26.8);
+            let window = this.createWindow(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i - 35, 0, 5 * LOGIC_CUBE_SIZE - 26.6, 0);
             group.add(window.clone());
         }
 
         for (var i = 0; i < 10; i++) {
-            let window = this.createWindow(4.5 - 35.2, 0, -4 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i - 28);
-            window.rotateY(Math.PI / 2)
+            let window = this.createWindow(4.5 - 35.2, 0, -4 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i - 28, Math.PI / 2);
             group.add(window.clone());
         }
 
@@ -78,13 +77,12 @@ export default class Winery {
 
         // set windows
         for (var i = 0; i < 3; ++i) {
-            let window = this.createWindow(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i + 35, 0, 5 * LOGIC_CUBE_SIZE - 26.8);
+            let window = this.createWindow(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i + 35, 0, 5 * LOGIC_CUBE_SIZE - 26.6, 0);
             group.add(window.clone());
         }
 
         for (var i = 0; i < 10; i++) {
-            let window = this.createWindow(-4.5 + 35.2, 0, -4 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i - 28);
-            window.rotateY(Math.PI / 2)
+            let window = this.createWindow(-4.5 + 35.2, 0, -4 * LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i - 28, Math.PI / 2);
             group.add(window.clone());
         }
 
@@ -106,7 +104,7 @@ export default class Winery {
         // set windows
         for (var j = 1; j < n; ++j) {
             for (var i = 0; i < 3; ++i) {
-                let window = this.createWindow(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, j * LOGIC_CUBE_SIZE, -40 + 4.4);
+                let window = this.createWindow(-LOGIC_CUBE_SIZE + LOGIC_CUBE_SIZE * i, j * LOGIC_CUBE_SIZE, -40 + 4.4, 0);
                 group.add(window.clone());
             }
         }
@@ -134,7 +132,11 @@ export default class Winery {
         return group;
     }
 
-    createWindow(x, y, z) {
+    createWindow(x, y, z, rotate) {
+
+        let group = new Group();
+
+        // window
         let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 0.1);
         let window = new Mesh(windowGeometry);
 
@@ -149,9 +151,38 @@ export default class Winery {
         window.material.opacity = 0.4;
         window.material.envMap = textureCube;
         textureCube.mapping = EquirectangularReflectionMapping;
-        window.position.set(x, y, z);
+        window.position.set(0, 0, 0);
+        group.add(window);
 
-        return window;
+        //frame
+        let frameGeometry = new BoxGeometry(0.1, 0.6 * LOGIC_CUBE_SIZE, 0.5);
+        let material = new MeshPhongMaterial({color: 0x777777});
+        let frame = new Mesh(frameGeometry, material);
+        frame.position.set(0.3 / 2 * LOGIC_CUBE_SIZE, 0, 0);
+        group.add(frame);
+
+        frame = frame.clone();
+        frame.position.set(-0.3 / 2 * LOGIC_CUBE_SIZE, 0, 0);
+        group.add(frame);
+
+        group.rotateY(rotate);
+        group.position.set(x, y, z);
+
+        frameGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.1, 0.5);
+        frame = new Mesh(frameGeometry, material);
+        frame.position.set(0, 0.6/2 * LOGIC_CUBE_SIZE, 0);
+        group.add(frame);
+
+        frame = frame.clone();
+        frame.position.set(0, -0.6/2 * LOGIC_CUBE_SIZE, 0);
+        group.add(frame);
+
+        frameGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.07, 0.2);
+        frame = new Mesh(frameGeometry, material);
+        frame.position.set(0, -0.6/4 * LOGIC_CUBE_SIZE, 0);
+        group.add(frame);
+
+        return group;
     }
 
     createLeftWall(facadeMaterial) {
@@ -164,19 +195,19 @@ export default class Winery {
         // Рельеф
         let reliefG = new BoxGeometry(3 * LOGIC_CUBE_SIZE, 0.2, 0.1);
         let relief = new Mesh(reliefG);
-        relief.position.set(0, 0.9, 11/2*LOGIC_CUBE_SIZE);
+        relief.position.set(0, 0.9, 11 / 2 * LOGIC_CUBE_SIZE);
         relief.updateMatrix();
         let union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
 
         relief = new Mesh(reliefG);
-        relief.position.set(0, 0.3, 11/2*LOGIC_CUBE_SIZE);
+        relief.position.set(0, 0.3, 11 / 2 * LOGIC_CUBE_SIZE);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
 
         relief = new Mesh(reliefG);
-        relief.position.set(0, -0.9, 11/2*LOGIC_CUBE_SIZE);
+        relief.position.set(0, -0.9, 11 / 2 * LOGIC_CUBE_SIZE);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
@@ -184,19 +215,19 @@ export default class Winery {
         // Рельеф
         reliefG = new BoxGeometry(0.1, 0.2, 11 * LOGIC_CUBE_SIZE);
         relief = new Mesh(reliefG);
-        relief.position.set(3/2 * LOGIC_CUBE_SIZE, 0.9, 0);
+        relief.position.set(3 / 2 * LOGIC_CUBE_SIZE, 0.9, 0);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
 
         relief = new Mesh(reliefG);
-        relief.position.set(3/2 * LOGIC_CUBE_SIZE, 0.3, 0);
+        relief.position.set(3 / 2 * LOGIC_CUBE_SIZE, 0.3, 0);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
 
         relief = new Mesh(reliefG);
-        relief.position.set(3/2 * LOGIC_CUBE_SIZE, -0.9, 0);
+        relief.position.set(3 / 2 * LOGIC_CUBE_SIZE, -0.9, 0);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
@@ -241,19 +272,19 @@ export default class Winery {
         // Рельеф
         let reliefG = new BoxGeometry(3 * LOGIC_CUBE_SIZE, 0.2, 0.1);
         let relief = new Mesh(reliefG);
-        relief.position.set(0, 0.9, 11/2*LOGIC_CUBE_SIZE);
+        relief.position.set(0, 0.9, 11 / 2 * LOGIC_CUBE_SIZE);
         relief.updateMatrix();
         let union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
 
         relief = new Mesh(reliefG);
-        relief.position.set(0, 0.3, 11/2*LOGIC_CUBE_SIZE);
+        relief.position.set(0, 0.3, 11 / 2 * LOGIC_CUBE_SIZE);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
 
         relief = new Mesh(reliefG);
-        relief.position.set(0, -0.9, 11/2*LOGIC_CUBE_SIZE);
+        relief.position.set(0, -0.9, 11 / 2 * LOGIC_CUBE_SIZE);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
@@ -261,19 +292,19 @@ export default class Winery {
         // Рельеф
         reliefG = new BoxGeometry(0.1, 0.2, 11 * LOGIC_CUBE_SIZE);
         relief = new Mesh(reliefG);
-        relief.position.set(-3/2 * LOGIC_CUBE_SIZE, 0.9, 0);
+        relief.position.set(-3 / 2 * LOGIC_CUBE_SIZE, 0.9, 0);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
 
         relief = new Mesh(reliefG);
-        relief.position.set(-3/2 * LOGIC_CUBE_SIZE, 0.3, 0);
+        relief.position.set(-3 / 2 * LOGIC_CUBE_SIZE, 0.3, 0);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
 
         relief = new Mesh(reliefG);
-        relief.position.set(-3/2 * LOGIC_CUBE_SIZE, -0.9, 0);
+        relief.position.set(-3 / 2 * LOGIC_CUBE_SIZE, -0.9, 0);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
@@ -344,19 +375,19 @@ export default class Winery {
         // Рельеф
         let reliefG = new BoxGeometry(26 * LOGIC_CUBE_SIZE, 0.2, 0.1);
         let relief = new Mesh(reliefG);
-        relief.position.set(0, 0.9, 1.5*LOGIC_CUBE_SIZE);
+        relief.position.set(0, 0.9, 1.5 * LOGIC_CUBE_SIZE);
         relief.updateMatrix();
         let union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
 
         relief = new Mesh(reliefG);
-        relief.position.set(0, 0.3, 1.5*LOGIC_CUBE_SIZE);
+        relief.position.set(0, 0.3, 1.5 * LOGIC_CUBE_SIZE);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
 
         relief = new Mesh(reliefG);
-        relief.position.set(0, -0.9, 1.5*LOGIC_CUBE_SIZE);
+        relief.position.set(0, -0.9, 1.5 * LOGIC_CUBE_SIZE);
         relief.updateMatrix();
         union = CSG.fromMesh(relief);
         emptyCube = emptyCube.union(union);
