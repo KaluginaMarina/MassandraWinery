@@ -1,18 +1,23 @@
 import {BoxGeometry, Mesh, MeshPhongMaterial, Group, CylinderGeometry} from "three";
+import tweenY, {tweenR} from "../../utils/tweenY";
 
 export default class Bird {
     // x, y, z - coordinates
     // t - start pecking
     // d - acceleration pecking
     constructor(scene, x, y, z, t, d, rotetion) {
-        this.bird = this.createBird();
-        this.bird.position.set(x, y, z);
-        this.bird.rotateY(rotetion);
-        this.d = d;
+        this.interactionObjects = [];
+
         this.paws = this.creatPaws();
         this.paws.position.set(x, y, z);
         this.paws.rotateY(rotetion);
         scene.add(this.paws);
+
+        this.bird = this.createBird();
+        this.bird.position.set(x, y, z);
+        this.bird.rotateY(rotetion);
+        this.d = d;
+
         scene.add(this.bird);
         this.time = t;
     }
@@ -65,6 +70,23 @@ export default class Bird {
         bird = new Mesh(beak, material);
         bird.position.set(0.25, 0.15, 0);
         group.add(bird);
+
+        let paws = this.paws;
+
+        for (var i in group.children) {
+            group.children[i].userData.interact = function () {
+                var r = (Math.random() > 0.5) ? Math.random() * Math.PI : -Math.random() * Math.PI;
+                tweenY(group, r);
+                tweenY(paws, r);
+                var x = (Math.random() > 0.5) ? Math.random() : -Math.random();
+                var y = (Math.random() > 0.5) ? Math.random() : -Math.random();
+                tweenR(group, x, y);
+                tweenR(paws, x, y);
+                r = (Math.random() > 0.5) ? Math.random() * Math.PI : -Math.random() * Math.PI;
+                tweenY(group, r);
+                tweenY(paws, r);
+            }.bind(group.children[i]);
+        }
 
         return group;
     }

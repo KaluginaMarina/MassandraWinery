@@ -25,6 +25,7 @@ export default class InteractionController {
 
     function onMouseMove(e) {
       const intersects = raycast(e.clientX, e.clientY);
+      // console.log(intersects);
       if (
         intersects.length > 0 &&
         intersects[0].object.userData.interact != undefined

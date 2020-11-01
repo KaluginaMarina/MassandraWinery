@@ -36,8 +36,7 @@ export default class Winery {
             reflectivity: 0.8,
             roughness: 0.5,
             flatShading: true,
-            vertexColors: true,
-            // map: brinks
+            vertexColors: true
         });
 
         let group = new Group();

@@ -24,6 +24,8 @@ import {LightsAnimations} from "./classes/models/lightsAnimations";
 import * as TWEEN from "@tweenjs/tween.js";
 import Bird from "./classes/models/bird";
 import TowerClock from "./classes/models/clock";
+import bird from "./classes/models/bird";
+import tweenY from "./utils/tweenY";
 
 if (WEBGL.isWebGLAvailable()) {
     init();
