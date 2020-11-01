@@ -6,14 +6,16 @@ import {
     Mesh,
     MeshLambertMaterial, MeshPhongMaterial,
     MeshStandardMaterial,
-    PlaneGeometry,
+    PlaneGeometry, RepeatWrapping,
     TextureLoader
 } from "three";
 import {CSG} from "three-csg-ts";
 import skyPanoImg from "../../../resources/img/sky-dome-panorma.jpg";
+import brick from "../../../resources/img/brick_diffuse.jpg";
 import tweenY from "../../utils/tweenY";
+import snowTexture from "../../../resources/img/snow-1186174_960_720.jpg";
 
-let FACADE_COLOR = 0xe0cfb1;
+let FACADE_COLOR = 0xffffff;
 let LOGIC_CUBE_SIZE = 3;
 
 export default class Winery {
@@ -31,20 +33,12 @@ export default class Winery {
 
 
     createFacade(isMain) {
-        let facadeMaterial = new MeshStandardMaterial({
-            color: FACADE_COLOR,
-            reflectivity: 0.8,
-            roughness: 0.5,
-            flatShading: true,
-            vertexColors: true
-        });
-
         let group = new Group();
 
         // ====================================================
         // create main wall
         // ====================================================
-        let mainWallMesh = this.createMainWall(facadeMaterial);
+        let mainWallMesh = this.createMainWall();
 
         // set windows
         for (var i = 0; i < 19; ++i) {
@@ -59,7 +53,7 @@ export default class Winery {
         // create leftWall
         // ====================================================
 
-        group.add(this.createLeftWall(facadeMaterial));
+        group.add(this.createLeftWall());
 
         // set windows
         for (var i = 0; i < 3; ++i) {
@@ -76,7 +70,7 @@ export default class Winery {
         // ====================================================
         // create right wall
         // ====================================================
-        group.add(this.createRightWall(facadeMaterial));
+        group.add(this.createRightWall());
 
         // set windows
         for (var i = 0; i < 3; ++i) {
@@ -93,7 +87,7 @@ export default class Winery {
         // create tower
         // ====================================================
 
-        let tower = this.createTower(facadeMaterial, isMain);
+        let tower = this.createTower(isMain);
         group.add(tower);
 
         // add floor in tower
@@ -228,7 +222,22 @@ export default class Winery {
         return group;
     }
 
-    createLeftWall(facadeMaterial) {
+    createLeftWall() {
+        const textureLoader = new TextureLoader();
+
+        const bricks = textureLoader.load(brick);
+        bricks.wrapT = RepeatWrapping;
+        bricks.wrapS = RepeatWrapping;
+        bricks.repeat.set(10, 1);
+
+        let facadeMaterial = new MeshStandardMaterial({
+            color: FACADE_COLOR,
+            roughness: 0.5,
+            flatShading: true,
+            vertexColors: true,
+            map: bricks
+        });
+
         let group = new Group();
         let geometry1 = new BoxGeometry(3 * LOGIC_CUBE_SIZE, LOGIC_CUBE_SIZE, 11 * LOGIC_CUBE_SIZE);
         let leftWall = new Mesh(geometry1, facadeMaterial.clone());
@@ -304,7 +313,23 @@ export default class Winery {
         return group;
     }
 
-    createRightWall(facadeMaterial) {
+    createRightWall() {
+        const textureLoader = new TextureLoader();
+
+        const bricks = textureLoader.load(brick);
+        bricks.wrapT = RepeatWrapping;
+        bricks.wrapS = RepeatWrapping;
+        bricks.repeat.set(10, 1);
+
+        let facadeMaterial = new MeshStandardMaterial({
+            color: FACADE_COLOR,
+            roughness: 0.5,
+            flatShading: true,
+            vertexColors: true,
+            map: bricks
+        });
+
+
         let group = new Group();
         let geometry1 = new BoxGeometry(3 * LOGIC_CUBE_SIZE, LOGIC_CUBE_SIZE, 11 * LOGIC_CUBE_SIZE);
         let rightWall = new Mesh(geometry1, facadeMaterial.clone());
@@ -408,7 +433,22 @@ export default class Winery {
         return group;
     }
 
-    createMainWall(facadeMaterial) {
+    createMainWall() {
+        const textureLoader = new TextureLoader();
+
+        const bricks = textureLoader.load(brick);
+        bricks.wrapT = RepeatWrapping;
+        bricks.wrapS = RepeatWrapping;
+        bricks.repeat.set(25, 1);
+
+        let facadeMaterial = new MeshStandardMaterial({
+            color: FACADE_COLOR,
+            roughness: 0.5,
+            flatShading: true,
+            vertexColors: true,
+            map: bricks
+        });
+
         let mainWallGeometry = new BoxGeometry(26 * LOGIC_CUBE_SIZE, LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE);
         let mainWall = new Mesh(mainWallGeometry);
         mainWall.updateMatrix();
@@ -463,7 +503,22 @@ export default class Winery {
         return mainWallMesh;
     }
 
-    createTower(facadeMaterial, isMain) {
+    createTower(isMain) {
+        const textureLoader = new TextureLoader();
+
+        const bricks = textureLoader.load(brick);
+        bricks.wrapT = RepeatWrapping;
+        bricks.wrapS = RepeatWrapping;
+        bricks.repeat.set(3, 3);
+
+        let facadeMaterial = new MeshStandardMaterial({
+            color: FACADE_COLOR,
+            roughness: 0.5,
+            flatShading: true,
+            vertexColors: true,
+            map: bricks
+        });
+
         let n = 3
         if (isMain) {
             n = 2
@@ -508,20 +563,41 @@ export default class Winery {
     }
 
     createRoof() {
+        const textureLoader = new TextureLoader();
+
+        let snow = textureLoader.load(snowTexture);
+        snow.wrapT = RepeatWrapping;
+        snow.wrapS = RepeatWrapping;
+        snow.repeat.set(4, 4);
+
+        let snowMaterial = new MeshStandardMaterial({
+            color: 0xffffff,
+            map: snow
+        });
+
         let group = new Group();
 
         // Tower roof
         let roofGeometry = new CylinderBufferGeometry(0, LOGIC_CUBE_SIZE * 2.2, 4, 4);
-        let cylinder = new Mesh(roofGeometry, new MeshStandardMaterial());
-        cylinder.material.color.setHex(0xffffff);
+        let cylinder = new Mesh(roofGeometry, snowMaterial.clone());
         cylinder.rotation.y = (45 * Math.PI) / 180;
         cylinder.position.set(0, LOGIC_CUBE_SIZE * 5, -40);
         cylinder.matrixAutoUpdate = false;
         cylinder.updateMatrix();
         group.add(cylinder);
 
+        let snow1 = textureLoader.load(snowTexture);
+        snow.wrapT = RepeatWrapping;
+        snow.wrapS = RepeatWrapping;
+        snow.repeat.set(15, 4);
+
+        let snowMaterial1 = new MeshStandardMaterial({
+            color: 0xffffff,
+            map: snow1
+        });
+
         let roofGeometry2 = new CylinderBufferGeometry(3, LOGIC_CUBE_SIZE * 2.2, 2, 4);
-        var cylinder2 = new Mesh(roofGeometry2);
+        var cylinder2 = new Mesh(roofGeometry2, snowMaterial1.clone());
         cylinder2.rotation.y = (45 * Math.PI) / 180;
         cylinder2.updateMatrix();
 
@@ -536,7 +612,7 @@ export default class Winery {
         }
 
         let box = new BoxGeometry(3 * LOGIC_CUBE_SIZE, 3.5 * LOGIC_CUBE_SIZE, 3.5 * LOGIC_CUBE_SIZE);
-        let boxMesh = new Mesh(box);
+        let boxMesh = new Mesh(box, snowMaterial1.clone());
         boxMesh.position.set(35.1, -3, 0);
         boxMesh.updateMatrix();
 
@@ -544,8 +620,7 @@ export default class Winery {
         res = res.subtract(boxCSG);
 
         cylinder2 = CSG.toMesh(res, cylinder2.matrix);
-        cylinder2.material.color.setHex(0xffffff);
-        cylinder2.material = new MeshStandardMaterial();
+        cylinder2.material = snowMaterial1.clone();
         cylinder2.castShadow = true;
         cylinder2.receiveShadow = true;
         cylinder2.position.set(-LOGIC_CUBE_SIZE * 11.7, LOGIC_CUBE_SIZE - 0.5, -40);
@@ -565,8 +640,7 @@ export default class Winery {
         boxMesh1.position.set(LOGIC_CUBE_SIZE * 11.7, LOGIC_CUBE_SIZE - 0.5, -43);
 
         cylinder4 = this.substr(cylinder4, boxMesh1);
-        cylinder4.material.color.setHex(0xffffff);
-        cylinder4.material = new MeshStandardMaterial();
+        cylinder4.material = snowMaterial1.clone();
         cylinder4.castShadow = true;
         cylinder4.receiveShadow = true;
         cylinder4.updateMatrix();
