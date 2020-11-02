@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = {
     entry: './src/js/index.js',
@@ -15,7 +15,7 @@ module.exports = {
             title: 'Массандра',
             meta: {
                 "viewport": 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0',
-                "property": { "property":"og:image", "content":"ogimage.jpg" }
+                "property": {"property": "og:image", "content": "ogimage.jpg"}
             },
             // favicon: "src/images/favicon.ico"
             // template: 'src/test.html'
@@ -26,7 +26,7 @@ module.exports = {
         path: path.resolve(__dirname, 'dist')
     },
     optimization: {
-        splitChunks: { name: 'vendor', chunks: 'all' }
+        splitChunks: {name: 'vendor', chunks: 'all'}
     },
     // resolve: {
     //     alias: {
@@ -51,23 +51,32 @@ module.exports = {
                     'exports-loader?exports=default|SPE'
                 ]
             },
-		// {
-		// 	test: /\.(obj|mtl)$/,
-		// 	use: { loader: 'file-loader', options: { outputPath: 'objs' } }
-        // },
-        {
-            test: /\.css$/,
-            use: ['style-loader', 'css-loader']
-        },
-        {
-            test: /\.(png|svg|jpg|gif)$/,
-            use: [
-                {
-                    loader: 'file-loader',
-                    options: { outputPath: 'img' } // where to place images referenced in CSS and modules
-                }
-            ]
-        },
+            // {
+            // 	test: /\.(obj|mtl)$/,
+            // 	use: { loader: 'file-loader', options: { outputPath: 'objs' } }
+            // },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {outputPath: 'img'} // where to place images referenced in CSS and modules
+                    }
+                ]
+            },
+            {
+                test: /\.(ogg)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {outputPath: 'audio'} // where to place images referenced in CSS and modules
+                    }
+                ]
+            },
         ]
     }
 };
