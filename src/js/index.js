@@ -26,6 +26,7 @@ import Bird from "./classes/models/bird";
 import TowerClock from "./classes/models/clock";
 import bird from "./classes/models/bird";
 import tweenY from "./utils/tweenY";
+import Tree from "./classes/models/tree";
 
 if (WEBGL.isWebGLAvailable()) {
     init();
@@ -103,8 +104,18 @@ function init() {
     scene.add(towerClock.clock);
     scene.add(towerClock.arrowS);
     scene.add(towerClock.arrowM);
+
     // DOOR MOVEMENT
     new InteractionController(scene, camera.threeCamera, container);
+
+    // TREE
+    scene.add(new Tree(-23, -2.5, -30, 1.3, 1.3, 1.3).tree);
+    scene.add(new Tree(23, -2.5, -30, 1.3, 1.3, 1.3).tree);
+    scene.add(new Tree(23, -2.5, 30, 1.3, 1.3, 1.3).tree);
+    scene.add(new Tree(26, -2.5, 33, 1.3, 1.5, 1.3).tree);
+    scene.add(new Tree(-26, -2.5, 33, 1.3, 1.5, 1.3).tree);
+    scene.add(new Tree(-23, -2.5, 30, 1.3, 1.3, 1.3).tree);
+    scene.add(new Tree(-25, -2.3, 25, 0.9, 1.1, 0.9).tree);
 
     var i = 0;
 

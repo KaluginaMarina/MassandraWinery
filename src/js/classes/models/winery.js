@@ -3,8 +3,7 @@ import {
     DoubleSide,
     EquirectangularReflectionMapping,
     Group, Matrix4,
-    Mesh,
-    MeshLambertMaterial, MeshPhongMaterial,
+    Mesh, MeshPhongMaterial,
     MeshStandardMaterial,
     PlaneGeometry, RepeatWrapping,
     TextureLoader

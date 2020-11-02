@@ -15,7 +15,7 @@ export default function x(scene) {
     dirLight.castShadow = true;
 
     dirLight.shadow.camera.near = 10;
-    dirLight.shadow.camera.far = 100;
+    dirLight.shadow.camera.far = 200;
     dirLight.shadow.camera.left = -50;
     dirLight.shadow.camera.bottom = -50;
     dirLight.shadow.camera.right = 50;
