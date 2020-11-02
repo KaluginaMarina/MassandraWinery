@@ -21,19 +21,19 @@ let FACADE_COLOR = 0xffffff;
 let LOGIC_CUBE_SIZE = 3;
 
 export default class Winery {
-    constructor(isMain) {
+    constructor(isMain, camera) {
         this.interactionObjects = [];
         this.textureLoader = new TextureLoader();
-        this.winery = this.createWinery(isMain);
+        this.winery = this.createWinery(isMain, camera);
     }
 
-    createWinery(isMain) {
+    createWinery(isMain, camera) {
         var group = new Group();
-        group.add(this.createFacade(isMain));
+        group.add(this.createFacade(isMain, camera));
         return group;
     }
 
-    createFacade(isMain) {
+    createFacade(isMain, camera) {
         let group = new Group();
 
         // ====================================================
@@ -117,7 +117,7 @@ export default class Winery {
         // ====================================================
         // add door
         // ====================================================
-        group.add(this.addDoor());
+        group.add(this.addDoor(camera));
 
         // ====================================================
         // add balcony
@@ -572,7 +572,7 @@ export default class Winery {
         return group;
     }
 
-    addDoor() {
+    addDoor(camera) {
         let woodMaterial = this.getDoorMaterial();
 
         const doorGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE * 1.5, 0.6 * LOGIC_CUBE_SIZE * 1.5, 0.1 * LOGIC_CUBE_SIZE);
@@ -606,10 +606,10 @@ export default class Winery {
         door.castShadow = true;
         door.userData.interact = function () {
             if (door.rotation.y === 0) {
-                tweenY(door, (-75 * Math.PI) / 180);
+                tweenY(door, (-75 * Math.PI) / 180, camera);
 
             } else {
-                tweenY(door, 0);
+                tweenY(door, 0, camera);
             }
         }.bind(door);
 

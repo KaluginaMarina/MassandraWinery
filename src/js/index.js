@@ -4,7 +4,7 @@ import {
     Scene,
     Clock,
     SphereBufferGeometry,
-    Mesh,
+    Mesh, AudioLoader, Audio, AudioListener
 } from "three";
 import {WEBGL} from "three/examples/jsm/WebGL.js";
 import {THREEx} from "./libs/threex.skydomeshader";
@@ -24,8 +24,6 @@ import {LightsAnimations} from "./classes/models/lightsAnimations";
 import * as TWEEN from "@tweenjs/tween.js";
 import Bird from "./classes/models/bird";
 import TowerClock from "./classes/models/clock";
-import bird from "./classes/models/bird";
-import tweenY from "./utils/tweenY";
 import Tree from "./classes/models/tree";
 
 if (WEBGL.isWebGLAvailable()) {
@@ -92,9 +90,9 @@ function init() {
     scene.add(new Moon().moon);
 
     // WINERY
-    scene.add(new Winery(true).winery);
+    scene.add(new Winery(true, camera.threeCamera).winery);
 
-    let winery = new Winery(false).winery;
+    let winery = new Winery(false, camera.threeCamera).winery;
     winery.rotateX(Math.PI);
     winery.rotateZ(Math.PI);
     scene.add(winery);
