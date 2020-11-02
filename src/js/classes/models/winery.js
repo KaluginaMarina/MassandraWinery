@@ -423,7 +423,7 @@ export default class Winery {
 
     createFloor() {
         let group = new Group();
-        let geometry = new PlaneGeometry(3 * LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 32);
+        let geometry = new PlaneGeometry(3 * LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 1);
         let floor = new Mesh(geometry, new MeshStandardMaterial({color: 0x888888, side: DoubleSide}));
         floor.castShadow = true;
         floor.receiveShadow = true;
@@ -677,7 +677,7 @@ export default class Winery {
 
     addRooms() {
         let group = new Group();
-        let geometry = new PlaneGeometry(LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 2);
+        let geometry = new PlaneGeometry(LOGIC_CUBE_SIZE, 3 * LOGIC_CUBE_SIZE, 1);
         let room = new Mesh(geometry, new MeshStandardMaterial({color: 0x888888, side: DoubleSide}));
         room.rotateZ(Math.PI / 2)
         room.rotateX(Math.PI / 2);

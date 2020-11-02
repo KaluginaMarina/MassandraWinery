@@ -1,8 +1,22 @@
-import {Mesh, MeshPhongMaterial, PlaneGeometry} from "three";
+import {Mesh, MeshPhongMaterial, MeshStandardMaterial, PlaneGeometry, RepeatWrapping, TextureLoader} from "three";
+import snowTexture from "../../resources/img/snow.jpg";
 
 export default function ground() {
-    var geometry2 = new PlaneGeometry(10000, 10000, 1, 1);
-    var material2 = new MeshPhongMaterial({color: 0xffffff});
+    const textureLoader = new TextureLoader();
+
+    let snow = textureLoader.load(snowTexture);
+    snow.wrapT = RepeatWrapping;
+    snow.wrapS = RepeatWrapping;
+    snow.repeat.set(500, 500);
+
+    let snowMaterial = new MeshStandardMaterial({
+        color: 0xffffff,
+        map: snow
+    });
+
+
+    var geometry2 = new PlaneGeometry(500, 500, 1, 1);
+    var material2 = snowMaterial;
     var plane2 = new Mesh(geometry2, material2);
     plane2.receiveShadow = true;
     plane2.castShadow = true;
