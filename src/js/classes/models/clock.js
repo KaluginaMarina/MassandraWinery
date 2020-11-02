@@ -1,5 +1,16 @@
-import {CylinderGeometry, Mesh, MeshPhongMaterial, Group, BoxGeometry} from "three";
+import {
+    CylinderGeometry,
+    Mesh,
+    MeshPhongMaterial,
+    Group,
+    BoxGeometry,
+    TextureLoader,
+    RepeatWrapping,
+    MeshStandardMaterial
+} from "three";
 import {CSG} from "three-csg-ts";
+import woodTexture from "../../../resources/img/windowWood.jpg";
+import metalTexture from "../../../resources/img/metal.jpg";
 
 export default class TowerClock {
     constructor() {
@@ -16,7 +27,7 @@ export default class TowerClock {
         let group = new Group();
 
         let geometry = new CylinderGeometry(2.1, 2.1, 0.1, 52);
-        let material = new MeshPhongMaterial({color: 0x999999});
+        let material = this.getWoodMaterial();
         let clock = new Mesh(geometry, material);
         clock.position.y -= 0.01;
         clock.castShadow = true;
@@ -24,14 +35,14 @@ export default class TowerClock {
         group.add(clock);
 
         geometry = new CylinderGeometry(2, 2, 0.1, 52)
-        material = new MeshPhongMaterial({color: 0xffffff});
+        material = this.getMetalMaterial(0xffffff);
         clock = new Mesh(geometry, material);
         clock.castShadow = true;
         clock.receiveShadow = true;
         group.add(clock);
 
         let knobGeometry = new CylinderGeometry(0.1, 0.1, 0.01 * 2 * 1.5, 16);
-        material = new MeshPhongMaterial({color: 0x444444});
+        material = this.getMetalMaterial(0x333333);
         let knob = new Mesh(knobGeometry, material);
         knob.position.y += 0.1;
         group.add(knob);
@@ -48,7 +59,7 @@ export default class TowerClock {
             size = 3.8;
         }
         let arrowGeometry = new BoxGeometry(size, 0.1, 0.05);
-        let material = new MeshPhongMaterial({color: 0x444444});
+        let material = this.getMetalMaterial(0x333333);
         let arrow = new Mesh(arrowGeometry, material);
 
         let box = new Mesh(new BoxGeometry(4, 0.1, 0.05));
@@ -80,6 +91,40 @@ export default class TowerClock {
         let box = CSG.fromMesh(mesh1);
         let cut = CSG.fromMesh(mesh2);
         return CSG.toMesh(box.subtract(cut), mesh1.matrix);
+    }
+
+    getWoodMaterial(){
+        const textureLoader = new TextureLoader();
+
+        const wood = textureLoader.load(woodTexture);
+        wood.wrapT = RepeatWrapping;
+        wood.wrapS = RepeatWrapping;
+        wood.repeat.set(1, 1);
+
+        return new MeshStandardMaterial({
+            color: 0x777777,
+            roughness: 0.5,
+            flatShading: true,
+            vertexColors: true,
+            map: wood
+        });
+    }
+
+    getMetalMaterial(color){
+        const textureLoader = new TextureLoader();
+
+        const metal = textureLoader.load(metalTexture);
+        metal.wrapT = RepeatWrapping;
+        metal.wrapS = RepeatWrapping;
+        metal.repeat.set(1, 1);
+
+        return new MeshStandardMaterial({
+            color: color,
+            roughness: 0.5,
+            flatShading: true,
+            vertexColors: true,
+            map: metal
+        });
     }
 
 }

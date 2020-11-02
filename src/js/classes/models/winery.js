@@ -9,11 +9,14 @@ import {
     PlaneGeometry, RepeatWrapping,
     TextureLoader
 } from "three";
+import tweenY from "../../utils/tweenY";
 import {CSG} from "three-csg-ts";
 import skyPanoImg from "../../../resources/img/sky-dome-panorma.jpg";
-import brick from "../../../resources/img/brick_diffuse.jpg";
-import tweenY from "../../utils/tweenY";
-import snowTexture from "../../../resources/img/snow-1186174_960_720.jpg";
+import brickTexture from "../../../resources/img/brick_diffuse.jpg";
+import snowTexture from "../../../resources/img/snow.jpg";
+import marbleTexture from "../../../resources/img/mramor.jpg";
+import woodTexture from "../../../resources/img/wood.jpg";
+import windowWoodTexture from "../../../resources/img/windowWood.jpg";
 
 let FACADE_COLOR = 0xffffff;
 let LOGIC_CUBE_SIZE = 3;
@@ -171,13 +174,26 @@ export default class Winery {
 
     createWindow(x, y, z, rotate) {
 
+        const textureLoader = new TextureLoader();
+
+        const wood = textureLoader.load(windowWoodTexture);
+        wood.wrapT = RepeatWrapping;
+        wood.wrapS = RepeatWrapping;
+        wood.repeat.set(1, 1);
+
+        let woodMaterial = new MeshStandardMaterial({
+            color: 0x777777,
+            roughness: 0.5,
+            flatShading: true,
+            vertexColors: true,
+            map: wood
+        });
+
         let group = new Group();
 
         // window
         let windowGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.6 * LOGIC_CUBE_SIZE, 0.1);
         let window = new Mesh(windowGeometry);
-
-        let textureLoader = new TextureLoader();
 
         let textureCube = textureLoader.load(skyPanoImg, function () {
             window.material.needsUpdate = true;
@@ -193,8 +209,7 @@ export default class Winery {
 
         //frame
         let frameGeometry = new BoxGeometry(0.1, 0.6 * LOGIC_CUBE_SIZE + 0.1, 0.5);
-        let material = new MeshPhongMaterial({color: 0x777777});
-        let frame = new Mesh(frameGeometry, material);
+        let frame = new Mesh(frameGeometry, woodMaterial);
         frame.position.set(0.3 / 2 * LOGIC_CUBE_SIZE, 0, 0);
         group.add(frame);
 
@@ -206,7 +221,7 @@ export default class Winery {
         group.position.set(x, y, z);
 
         frameGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.1, 0.5);
-        frame = new Mesh(frameGeometry, material);
+        frame = new Mesh(frameGeometry, woodMaterial);
         frame.position.set(0, 0.6 / 2 * LOGIC_CUBE_SIZE, 0);
         group.add(frame);
 
@@ -215,7 +230,7 @@ export default class Winery {
         group.add(frame);
 
         frameGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE, 0.07, 0.2);
-        frame = new Mesh(frameGeometry, material);
+        frame = new Mesh(frameGeometry, woodMaterial);
         frame.position.set(0, -0.6 / 4 * LOGIC_CUBE_SIZE, 0);
         group.add(frame);
 
@@ -225,7 +240,7 @@ export default class Winery {
     createLeftWall() {
         const textureLoader = new TextureLoader();
 
-        const bricks = textureLoader.load(brick);
+        const bricks = textureLoader.load(brickTexture);
         bricks.wrapT = RepeatWrapping;
         bricks.wrapS = RepeatWrapping;
         bricks.repeat.set(10, 1);
@@ -316,7 +331,7 @@ export default class Winery {
     createRightWall() {
         const textureLoader = new TextureLoader();
 
-        const bricks = textureLoader.load(brick);
+        const bricks = textureLoader.load(brickTexture);
         bricks.wrapT = RepeatWrapping;
         bricks.wrapS = RepeatWrapping;
         bricks.repeat.set(10, 1);
@@ -436,7 +451,7 @@ export default class Winery {
     createMainWall() {
         const textureLoader = new TextureLoader();
 
-        const bricks = textureLoader.load(brick);
+        const bricks = textureLoader.load(brickTexture);
         bricks.wrapT = RepeatWrapping;
         bricks.wrapS = RepeatWrapping;
         bricks.repeat.set(25, 1);
@@ -506,7 +521,7 @@ export default class Winery {
     createTower(isMain) {
         const textureLoader = new TextureLoader();
 
-        const bricks = textureLoader.load(brick);
+        const bricks = textureLoader.load(brickTexture);
         bricks.wrapT = RepeatWrapping;
         bricks.wrapS = RepeatWrapping;
         bricks.repeat.set(3, 3);
@@ -589,7 +604,7 @@ export default class Winery {
         let snow1 = textureLoader.load(snowTexture);
         snow.wrapT = RepeatWrapping;
         snow.wrapS = RepeatWrapping;
-        snow.repeat.set(15, 4);
+        snow.repeat.set(44, 4);
 
         let snowMaterial1 = new MeshStandardMaterial({
             color: 0xffffff,
@@ -686,9 +701,19 @@ export default class Winery {
     }
 
     addDoor() {
-        var material = new MeshLambertMaterial({
-            color: 0xff1111,
-            wireframe: false,
+        const textureLoader = new TextureLoader();
+
+        const wood = textureLoader.load(woodTexture);
+        wood.wrapT = RepeatWrapping;
+        wood.wrapS = RepeatWrapping;
+        wood.repeat.set(1, 1);
+
+        let woodMaterial = new MeshStandardMaterial({
+            color: 0xffffff,
+            roughness: 0.5,
+            flatShading: true,
+            vertexColors: true,
+            map: wood
         });
 
         const doorGeometry = new BoxGeometry(0.3 * LOGIC_CUBE_SIZE * 1.5, 0.6 * LOGIC_CUBE_SIZE * 1.5, 0.1 * LOGIC_CUBE_SIZE);
@@ -698,12 +723,8 @@ export default class Winery {
 
         doorGeometry.applyMatrix4(new Matrix4().makeTranslation(0.2 * LOGIC_CUBE_SIZE * 1.5, 0, 0));
 
-        const woodMaterial = material.clone();
-        woodMaterial.color.setHex(0x876a14);
-
-        const reflectiveMaterial = material.clone();
-        reflectiveMaterial.color.setHex(0xffffff);
-        reflectiveMaterial.reflectivity = 0.8;
+        const reflectiveMaterial = woodMaterial.clone();
+        reflectiveMaterial.color.setHex(0x333333);
 
         const doorMaterial = [
             woodMaterial,
@@ -741,10 +762,37 @@ export default class Winery {
     }
 
     addBalcony() {
+        const textureLoader = new TextureLoader();
+
+        const wood = textureLoader.load(windowWoodTexture);
+        wood.wrapT = RepeatWrapping;
+        wood.wrapS = RepeatWrapping;
+        wood.repeat.set(1, 1);
+
+        let material = new MeshStandardMaterial({
+            color: 0xaaaaaa,
+            roughness: 0.5,
+            flatShading: true,
+            vertexColors: true,
+            map: wood
+        });
+
+        const marble = textureLoader.load(marbleTexture);
+        marble.wrapT = RepeatWrapping;
+        marble.wrapS = RepeatWrapping;
+        marble.repeat.set(1, 1);
+
+        let marbleMaterial = new MeshStandardMaterial({
+            color: 0xaaaaaa,
+            roughness: 0.5,
+            flatShading: true,
+            vertexColors: true,
+            map: marble
+        });
+
         let group = new Group();
 
         let geometry = new BoxGeometry(2.5 * LOGIC_CUBE_SIZE, 0.2, LOGIC_CUBE_SIZE / 2);
-        let material = new MeshPhongMaterial({color: 0xaaaaaa});
         let balcony = new Mesh(geometry, material);
         balcony.castShadow = true;
         balcony.receiveShadow = true;
@@ -754,7 +802,7 @@ export default class Winery {
         let cylinderG = new CylinderGeometry(0.1, 0.06, 0.4, 52);
         let cylinderG1 = new CylinderGeometry(0.06, 0.06, 0.4, 52);
         let cylinderG2 = new CylinderGeometry(0.06, 0.1, 0.4, 52);
-        let materialCylinder = new MeshPhongMaterial({color: 0xffffff});
+        let materialCylinder = marbleMaterial;
         let cylinder = new Mesh(cylinderG, materialCylinder);
         groupCylinder.add(cylinder)
         cylinder = new Mesh(cylinderG1, materialCylinder);
