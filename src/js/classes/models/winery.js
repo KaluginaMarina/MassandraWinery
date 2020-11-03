@@ -8,7 +8,7 @@ import {
     PlaneGeometry, RepeatWrapping,
     TextureLoader
 } from "three";
-import tweenY from "../../utils/tweenY";
+import tweens from "../../utils/tweens";
 import {CSG} from "three-csg-ts";
 import skyPanoImg from "../../../resources/img/sky-dome-panorma.jpg";
 import brickTexture from "../../../resources/img/brick_diffuse.jpg";
@@ -606,10 +606,10 @@ export default class Winery {
         door.castShadow = true;
         door.userData.interact = function () {
             if (door.rotation.y === 0) {
-                tweenY(door, (-75 * Math.PI) / 180, camera);
+                tweens(door, (-75 * Math.PI) / 180, camera);
 
             } else {
-                tweenY(door, 0, camera);
+                tweens(door, 0, camera);
             }
         }.bind(door);
 

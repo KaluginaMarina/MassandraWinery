@@ -1,5 +1,5 @@
 import {BoxGeometry, Mesh, MeshPhongMaterial, Group, CylinderGeometry} from "three";
-import tweenY, {tweenR} from "../../utils/tweenY";
+import tweens, {tweenBirdY, tweenR} from "../../utils/tweens";
 
 export default class Bird {
     // x, y, z - coordinates
@@ -75,16 +75,13 @@ export default class Bird {
 
         for (var i in group.children) {
             group.children[i].userData.interact = function () {
-                var r = (Math.random() > 0.5) ? Math.random() * Math.PI : -Math.random() * Math.PI;
-                tweenY(group, r);
-                tweenY(paws, r);
                 var x = (Math.random() > 0.5) ? Math.random() : -Math.random();
                 var y = (Math.random() > 0.5) ? Math.random() : -Math.random();
                 tweenR(group, x, y);
                 tweenR(paws, x, y);
-                r = (Math.random() > 0.5) ? Math.random() * Math.PI : -Math.random() * Math.PI;
-                tweenY(group, r);
-                tweenY(paws, r);
+                let r = (Math.random() > 0.5) ? Math.random() * Math.PI : -Math.random() * Math.PI;
+                tweenBirdY(group, r);
+                tweenBirdY(paws, r);
             }.bind(group.children[i]);
         }
 
