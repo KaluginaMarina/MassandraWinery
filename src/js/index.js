@@ -15,6 +15,7 @@ import Camera from "./classes/controllers/camera";
 import InteractionController from "./classes/controllers/interactionController";
 import SnowParticles from "./utils/snowParticles";
 import * as Lights from "./utils/lights";
+import * as Roundwood from "./classes/controllers/LoadingManager";
 
 import * as Ground from "./utils/ground";
 
@@ -114,6 +115,8 @@ function init() {
     scene.add(new Tree(-26, -2.5, 33, 1.3, 1.5, 1.3).tree);
     scene.add(new Tree(-23, -2.5, 30, 1.3, 1.3, 1.3).tree);
     scene.add(new Tree(-25, -2.3, 25, 0.9, 1.1, 0.9).tree);
+
+    Roundwood.default(scene);
 
     var i = 0;
 

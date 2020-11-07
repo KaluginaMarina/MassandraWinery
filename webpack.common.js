@@ -69,6 +69,15 @@ module.exports = {
                 ]
             },
             {
+                test: /\.(obj)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {outputPath: 'models'} // where to place images referenced in CSS and modules
+                    }
+                ]
+            },
+            {
                 test: /\.(ogg)$/,
                 use: [
                     {
