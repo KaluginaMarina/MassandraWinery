@@ -1,6 +1,6 @@
 // instantiate a loader
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader.js';
-import {ROUNDWOOD} from "../../../resources/models/OBJ/Wood.obj";
+import ROUNDWOOD from "../../../resources/models/OBJ/Wood.obj";
 import {Color, EquirectangularReflectionMapping, Mesh, MeshPhysicalMaterial, TextureLoader} from "three";
 import roundWoodTexture from "../../../resources/models/OBJ/WoodTexture.png";
 
@@ -10,7 +10,7 @@ export default function (scene) {
 // load a resource
     loader.load(
         // resource URL
-        "../../../resources/models/OBJ/Wood.obj",
+        ROUNDWOOD,
         // called when resource is loaded
         function (object) {
 
