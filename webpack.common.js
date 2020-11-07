@@ -17,8 +17,7 @@ module.exports = {
                 "viewport": 'width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0',
                 "property": {"property": "og:image", "content": "ogimage.jpg"}
             },
-            // favicon: "src/images/favicon.ico"
-            // template: 'src/test.html'
+            favicon: "src/favicon.ico"
         })
     ],
     output: {
